@@ -58,4 +58,17 @@ function updateProgress() {
   const pct = Math.round((state.activatedSections.size / total) * 100);
   const el = document.querySelector('.progress-value');
   if (el) el.textContent = `${pct}%`;
+  // 持久化（回访显示已探索度）
+  try { localStorage.setItem('ink-scroll-progress', String(pct)); } catch (e) {}
+}
+
+// 回访恢复
+export function restoreProgress() {
+  try {
+    const saved = localStorage.getItem('ink-scroll-progress');
+    if (saved) {
+      const el = document.querySelector('.progress-value');
+      if (el) el.textContent = `${saved}%`;
+    }
+  } catch (e) {}
 }

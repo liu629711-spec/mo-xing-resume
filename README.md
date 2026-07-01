@@ -76,10 +76,18 @@ npx serve .
 
 ## 适配
 
-- **桌面**：完整 3D + 全部特效
-- **平板**：3D 降分辨率，简化特效
-- **手机**：自动切换 2D 水墨卷轴模式（纵向滚动 + 预渲染背景 + CSS 视差）
-- **减弱动画**：尊重 `prefers-reduced-motion`，关闭重特效
+- **桌面**：完整 3D + 全部特效（开卷仪式 / 金缮 / 书法粒子 / 四季流转 / 水墨山水）
+- **平板**：3D 渲染降分辨率（pixelRatio 限制为 2），保留全部特效
+- **手机（<768px）**：自动切换 2D 水墨卷轴模式（纵向滚动 + 保留宣纸底纹/四季/金缮/D3 图表/时间轴），不启动 Three.js
+- **减弱动画**：尊重 `prefers-reduced-motion`，跳过开卷仪式、书法粒子聚合、3D 摄像机推进，内容直接淡入
+
+## 性能
+
+- Three.js 像素比限制 `min(devicePixelRatio, 2)`
+- 视锥外 3D 对象 `frustumCulled = false`（长卷沿 X，统一管理）但材质透明度按距离衰减
+- D3 图表懒绘制（仅进入视口时绘制一次）
+- 宣纸底纹低分辨率（256×256）生成 + CSS 放大
+- 季节切换用 CSS transition + GSAP uniform tween，1s 平滑过渡
 
 ## 测试
 
@@ -88,9 +96,19 @@ npm install
 npm test
 ```
 
-数据层纯函数（季节判定、像素采样、JSON schema 校验）有单元测试；视觉/3D 部分采用手动验收清单。
+数据层纯函数单元测试（Vitest + jsdom）：
+- 季节判定 `getSeasonByMonth`（7 测试）
+- 数据 schema 校验（18 测试）
+- 书法粒子像素采样 `samplePointsFromImageData`（4 测试）
+
+视觉/3D 部分采用手动验收清单（见规格文档第 10 节）。
 
 ## 文档
 
 - 设计规格：`docs/superpowers/specs/2026-07-02-ink-scroll-portfolio-design.md`
 - 实现计划：`docs/superpowers/plans/2026-07-02-ink-scroll-portfolio.md`
+
+## 浏览器支持
+
+- Chrome / Edge / Firefox / Safari 最新版（需 WebGL2）
+- 不支持 WebGL 的环境自动降级为纯 2D 模式

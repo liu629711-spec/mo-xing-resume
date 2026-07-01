@@ -3,7 +3,7 @@ import { currentSeason, setSeason, initSeasonSwitcher, onSeasonChange, SEASON_VA
 import { initPaperBg, refreshPaperBg } from '../effects/paper-bg.js';
 import { loadAllData } from './data-loader.js';
 import { initSmoothScroll, getProgress } from './scroll.js';
-import { registerSections } from './router.js';
+import { registerSections, restoreProgress } from './router.js';
 import { state } from './state.js';
 import { playLoadingSequence } from '../sections/loading.js';
 import { renderAbout } from '../sections/about.js';
@@ -28,8 +28,16 @@ function guardGsap() {
   return false;
 }
 
-// 启动 3D 场景；失败则走 2D 降级
+// 启动 3D 场景；失败/移动端/reduced-motion 则走 2D 降级
 function bootThree(data) {
+  // 移动端或减弱动画：跳过 3D，纯 2D 卷轴模式
+  if (state.isMobile || state.reducedMotion) {
+    console.log('[init] 移动端/reduced-motion，采用纯 2D 模式');
+    state.has3D = false;
+    const host = document.getElementById('three-canvas');
+    if (host) host.style.display = 'none';
+    return null;
+  }
   try {
     const s = initThreeScene();
     const world = createWorld(s.uniforms);
@@ -96,16 +104,24 @@ async function main() {
     await document.fonts.ready;
   }
   const sectionNames = ['about', 'skills', 'projects', 'data', 'games', 'timeline', 'contact'];
-  sectionNames.forEach((name) => {
-    const el = document.getElementById(`sec-${name}`);
-    if (el) titleControllers[name] = enhanceTitles(el);
-  });
+  if (!state.reducedMotion) {
+    sectionNames.forEach((name) => {
+      const el = document.getElementById(`sec-${name}`);
+      if (el) titleControllers[name] = enhanceTitles(el);
+    });
+  }
 
-  // 6. 开卷仪式 → 启动滚动
-  await playLoadingSequence(data.profile);
+  // 6. 开卷仪式 → 启动滚动（reduced-motion 时跳过）
+  if (state.reducedMotion) {
+    const screen = document.getElementById('loading-screen');
+    if (screen) screen.style.display = 'none';
+  } else {
+    await playLoadingSequence(data.profile);
+  }
 
   // 7. 平滑滚动
   initSmoothScroll();
+  restoreProgress();
 
   // 8. 板块路由与触发器
   registerSections(
