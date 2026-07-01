@@ -1,0 +1,528 @@
+/* ============================================================
+   sections.css — 各板块信息层样式
+   ============================================================ */
+
+/* ============ 板块 1：入山亭 · 个人介绍 ============ */
+#sec-about {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  width: 100%;
+}
+.about-name {
+  font-family: var(--font-title);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.1em;
+  margin: 1rem 0;
+}
+.about-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  opacity: 0.85;
+  max-width: 36ch;
+}
+.about-summary {
+  margin-top: 3vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.about-summary li {
+  list-style: none;
+  font-size: 1.05rem;
+  opacity: 0.8;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.about-summary li::before {
+  content: '·';
+  position: absolute;
+  left: 0.4rem;
+  color: var(--accent);
+  font-weight: 900;
+}
+.about-seal-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ============ 板块 2：星罗棋盘 · 技能 ============ */
+#sec-skills {
+  flex-direction: column;
+  justify-content: center;
+}
+.skills-stage {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+}
+.skills-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+.skill-category {
+  padding: 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--paper) 50%, transparent);
+}
+.skill-category h3 {
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+.skill-item {
+  margin-bottom: 0.8rem;
+}
+.skill-item-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+.skill-bar {
+  height: 4px;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ink), var(--gold));
+  width: 0;
+  transition: width 1.2s var(--ease-ink);
+}
+.skill-story {
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  opacity: 0.65;
+  font-style: italic;
+}
+
+/* ============ 板块 3：峰峦叠嶂 · 项目 ============ */
+#sec-projects {
+  flex-direction: column;
+  justify-content: center;
+}
+.projects-peaks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 3vh;
+}
+.peak-card {
+  cursor: pointer;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.peak-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink) 8%, transparent));
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.peak-name {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+.peak-period {
+  font-family: var(--font-num);
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+.peak-metrics {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.peak-metric {
+  text-align: left;
+}
+.peak-metric .v {
+  font-family: var(--font-num);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gold);
+  display: block;
+}
+.peak-metric .l {
+  font-size: 0.72rem;
+  opacity: 0.65;
+}
+
+/* 项目详情卷 */
+.detail-scroll {
+  background: var(--paper);
+  width: min(900px, 92vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 0.6rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.detail-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-title);
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+.detail-close:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.detail-title {
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 0.5rem;
+}
+.detail-meta {
+  font-family: var(--font-num);
+  opacity: 0.6;
+  margin-bottom: 1.5rem;
+}
+.detail-section {
+  margin: 1.5rem 0;
+}
+.detail-section h4 {
+  font-family: var(--font-title);
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.detail-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.detail-metrics-grid .peak-metric {
+  text-align: center;
+}
+.detail-list {
+  list-style: none;
+  padding: 0;
+}
+.detail-list li {
+  padding: 0.4rem 0 0.4rem 1.2rem;
+  position: relative;
+  border-bottom: 1px dashed color-mix(in srgb, var(--ink) 12%, transparent);
+}
+.detail-list li::before {
+  content: '○';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 0.7rem;
+}
+
+/* ============ 板块 4：墨河奔流 · 数据 ============ */
+#sec-data {
+  flex-direction: column;
+  justify-content: center;
+}
+.data-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin: 3vh 0;
+}
+.highlight-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+.highlight-card .v {
+  font-family: var(--font-num);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.highlight-card .v .unit {
+  font-size: 0.5em;
+  color: var(--accent);
+  margin-left: 0.2em;
+}
+.highlight-card .l {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+.data-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 3vh;
+}
+.chart-card {
+  padding: 1.5rem;
+}
+.chart-card h4 {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+.chart-card svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ============ 板块 5：碑林 · 游戏作品 ============ */
+#sec-games {
+  flex-direction: column;
+  justify-content: center;
+}
+.stele-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3vh;
+}
+.stele {
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 0.3rem;
+  padding: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.4s var(--ease-ink), border-color 0.4s;
+}
+.stele:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+}
+.stele-cover {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  border-radius: 0.2rem;
+  margin-bottom: 0.8rem;
+  background-size: cover;
+  background-position: center;
+}
+.stele-name {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+}
+.stele-meta {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  font-family: var(--font-num);
+}
+.stele-nda {
+  text-align: center;
+  font-family: var(--font-title);
+  opacity: 0.4;
+  font-size: 0.85rem;
+  padding: 4rem 1rem;
+}
+
+/* ============ 板块 6：山径蜿蜒 · 时间轴 ============ */
+#sec-timeline {
+  flex-direction: column;
+  justify-content: center;
+}
+.timeline-path {
+  position: relative;
+  margin-top: 4vh;
+  padding-left: 2rem;
+}
+.timeline-path::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold), var(--ink), transparent);
+  opacity: 0.4;
+}
+.timeline-node {
+  position: relative;
+  padding: 0 0 2.5rem 2.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-ink), transform 0.6s var(--ease-ink);
+}
+.timeline-node.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.timeline-node::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem;
+  top: 0.3rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s;
+}
+.timeline-node.is-visible::before {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent);
+}
+.timeline-node-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.timeline-year {
+  font-family: var(--font-num);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.timeline-title {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+}
+.timeline-org {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+.timeline-desc {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  opacity: 0.78;
+  max-width: 50ch;
+}
+.timeline-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 0.7rem;
+  border-radius: 0.3rem;
+  margin-left: 0.5rem;
+  transform: rotate(-6deg);
+}
+
+/* ============ 板块 7：归舟渡口 · 联系 ============ */
+#sec-contact {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.contact-title {
+  font-family: var(--font-title);
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin-bottom: 1rem;
+}
+.contact-invite {
+  font-size: 1.15rem;
+  opacity: 0.8;
+  max-width: 30ch;
+  margin-bottom: 3vh;
+}
+.contact-grid {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2vh;
+}
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  transition: transform 0.3s, border-color 0.3s;
+  min-width: 120px;
+}
+.contact-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+}
+.contact-item .icon {
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+.contact-item .label {
+  font-family: var(--font-title);
+  font-size: 1rem;
+}
+.contact-item .value {
+  font-family: var(--font-num);
+  font-size: 0.85rem;
+  opacity: 0.65;
+}
+.contact-qr {
+  margin-top: 1rem;
+  display: none;
+}
+.contact-qr.is-show {
+  display: block;
+}
+.contact-qr img {
+  width: 140px;
+  height: 140px;
+  background: var(--paper);
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+/* Toast */
+.ink-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.8rem 1.6rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s, transform 0.4s var(--ease-ink);
+}
+.ink-toast.is-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

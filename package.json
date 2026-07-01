@@ -1,0 +1,24 @@
+{
+  "name": "ink-scroll-portfolio",
+  "version": "1.0.0",
+  "description": "水墨长卷 · 游戏运营求职简历 —— 3D 水墨山水个人介绍网站",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "npx serve .",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "portfolio",
+    "ink",
+    "three.js",
+    "gsap",
+    "resume"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "vitest": "^1.6.0"
+  }
+}

@@ -1,0 +1,232 @@
+/* ============================================================
+   core.css — 全局变量、reset、布局骨架
+   ============================================================ */
+
+:root {
+  /* 默认秋季（由 seasons.js 动态覆盖） */
+  --paper: #EDE4D3;
+  --ink: #141414;
+  --gold: #D4AF37;
+  --accent: #B5483A;
+
+  /* 字体 */
+  --font-title: 'Ma Shan Zheng', 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+  --font-body: 'Noto Serif SC', 'Songti SC', serif;
+  --font-num: 'Cormorant Garamond', 'Noto Serif SC', serif;
+
+  /* 尺寸 */
+  --section-height: 100vh;
+  --max-content-width: 1200px;
+  --gutter: clamp(1.5rem, 5vw, 5rem);
+
+  /* 动效 */
+  --ease-ink: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-brush: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto; /* Lenis 接管平滑滚动 */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background-color 1.2s var(--ease-ink), color 1.2s var(--ease-ink);
+}
+
+/* 宣纸底纹（最底层） */
+#paper-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Three.js 画布容器（在宣纸之上，信息层之下） */
+#three-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+#three-canvas canvas {
+  display: block;
+}
+
+/* 主长卷 */
+#scroll-container {
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  min-height: var(--section-height);
+  width: 100%;
+  padding: 8vh var(--gutter);
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Loading 开卷仪式 */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s var(--ease-ink);
+}
+#loading-screen.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+#loading-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#skip-loading {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  letter-spacing: 0.2em;
+}
+#skip-loading:hover {
+  opacity: 1;
+}
+
+/* 金缮过渡叠层 */
+#kintsugi-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  display: none;
+}
+#kintsugi-overlay.is-active {
+  display: block;
+}
+#kintsugi-overlay canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 墨晕过渡叠层 */
+#ink-ripple-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  pointer-events: none;
+  display: none;
+}
+#ink-ripple-overlay.is-active {
+  display: block;
+}
+#ink-ripple-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 四季切换器 */
+#season-switcher {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 60;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+  border-radius: 2rem;
+  backdrop-filter: blur(6px);
+}
+#season-switcher button {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0.45;
+  transition: opacity 0.3s, background-color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#season-switcher button:hover {
+  opacity: 0.8;
+  transform: scale(1.08);
+}
+#season-switcher button.is-active {
+  opacity: 1;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+/* 探索进度 */
+#explore-progress {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 60;
+  font-family: var(--font-num);
+  font-size: 0.9rem;
+  color: var(--ink);
+  opacity: 0.55;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.progress-value {
+  font-weight: 600;
+  min-width: 3ch;
+}
+
+/* 项目详情卷 overlay */
+#project-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--ink) 75%, transparent);
+  backdrop-filter: blur(4px);
+}
+#project-detail-overlay.is-open {
+  display: flex;
+}

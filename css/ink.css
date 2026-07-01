@@ -1,0 +1,173 @@
+/* ============================================================
+   ink.css — 水墨/宣纸相关工具类
+   ============================================================ */
+
+/* 书法大标题 */
+.ink-title {
+  font-family: var(--font-title);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+}
+
+.ink-title-xl {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+}
+
+.ink-title-lg {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+.ink-title-md {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+/* 宋体正文 */
+.ink-text {
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+.ink-text-lg {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+}
+
+.ink-text-sm {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* 数字 / 英文 */
+.num {
+  font-family: var(--font-num);
+  font-feature-settings: 'lnum';
+}
+
+.num-xl {
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.num-md {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 500;
+}
+
+/* 印章 */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  background: var(--accent);
+  color: var(--paper);
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  border-radius: 0.4rem;
+  letter-spacing: 0;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
+  transform: rotate(-4deg);
+  transition: transform 0.4s var(--ease-ink);
+  cursor: default;
+  user-select: none;
+}
+.seal:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+.seal-square {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  line-height: 1.1;
+  padding: 0.5rem 0.4rem;
+}
+
+/* 笔刷下划线 */
+.ink-brush-underline {
+  position: relative;
+  display: inline-block;
+}
+.ink-brush-underline::after {
+  content: '';
+  position: absolute;
+  left: -0.1em;
+  right: -0.1em;
+  bottom: -0.15em;
+  height: 0.35em;
+  background: var(--ink);
+  opacity: 0.12;
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.8s var(--ease-brush);
+}
+.ink-brush-underline.is-drawn::after {
+  transform: scaleX(1);
+}
+
+/* 墨笔分隔线 */
+.ink-divider {
+  width: 4rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--ink), transparent);
+  margin: 1.5rem 0;
+  opacity: 0.6;
+}
+
+/* 板块标题区域 */
+.section-head {
+  margin-bottom: 4vh;
+}
+.section-head .section-ji {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  color: var(--accent);
+  letter-spacing: 0.3em;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+.section-head .section-title {
+  font-family: var(--font-title);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+}
+
+/* 水墨卡片 */
+.ink-card {
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(3px);
+  transition: transform 0.4s var(--ease-ink), border-color 0.4s, box-shadow 0.4s;
+}
+.ink-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--gold) 50%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* 标签 */
+.ink-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.8rem;
+  font-family: var(--font-body);
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+  border-radius: 1rem;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+/* 内容容器 */
+.content-wrap {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  width: 100%;
+}

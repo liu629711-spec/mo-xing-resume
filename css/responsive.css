@@ -1,0 +1,94 @@
+/* ============================================================
+   responsive.css — 响应式适配
+   桌面 >1024：完整体验
+   平板 768-1024：3D 降分辨率（阶段 2 接入），此处仅布局
+   手机 <768：2D 水墨卷轴模式（纵向单列）
+   ============================================================ */
+
+/* 平板 */
+@media (max-width: 1024px) {
+  :root {
+    --gutter: clamp(1.2rem, 4vw, 2.5rem);
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-seal-wrap {
+    align-items: flex-start;
+  }
+  .detail-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 手机：2D 卷轴模式 */
+@media (max-width: 768px) {
+  :root {
+    --section-height: auto;
+    --gutter: 1.2rem;
+  }
+  .section {
+    padding: 5rem var(--gutter);
+    min-height: auto;
+  }
+  #season-switcher {
+    top: 1rem;
+    right: 1rem;
+  }
+  #season-switcher button {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.85rem;
+  }
+  #explore-progress {
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+  }
+  .about-summary li {
+    font-size: 0.95rem;
+  }
+  .skills-board {
+    grid-template-columns: 1fr;
+  }
+  .projects-peaks {
+    grid-template-columns: 1fr;
+  }
+  .data-highlights {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .data-charts {
+    grid-template-columns: 1fr;
+  }
+  .stele-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .detail-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-grid {
+    gap: 1rem;
+  }
+  .contact-item {
+    min-width: 100px;
+    padding: 1rem;
+  }
+}
+
+/* 减弱动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  #paper-bg {
+    will-change: auto;
+  }
+  .timeline-node {
+    opacity: 1;
+    transform: none;
+  }
+}

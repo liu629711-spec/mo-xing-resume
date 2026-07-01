@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="水墨长卷 · 游戏产品运营求职简历 —— 一轴可展卷的 3D 水墨山水" />
+  <title>水墨长卷 · 游戏运营简历</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/core.css" />
+  <link rel="stylesheet" href="css/ink.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- 宣纸底纹（最底层） -->
+  <canvas id="paper-bg" aria-hidden="true"></canvas>
+
+  <!-- Three.js 3D 画布（在宣纸之上，信息层之下） -->
+  <div id="three-canvas" aria-hidden="true"></div>
+
+  <!-- 开卷仪式 Loading -->
+  <div id="loading-screen" aria-live="polite">
+    <canvas id="loading-canvas"></canvas>
+    <button id="skip-loading" type="button" aria-label="跳过开卷仪式">跳过开卷</button>
+  </div>
+
+  <!-- 主长卷内容 -->
+  <main id="scroll-container">
+    <section id="sec-about" class="section" data-section="about" aria-label="个人介绍"></section>
+    <section id="sec-skills" class="section" data-section="skills" aria-label="技能矩阵"></section>
+    <section id="sec-projects" class="section" data-section="projects" aria-label="项目案例"></section>
+    <section id="sec-data" class="section" data-section="data" aria-label="数据成果"></section>
+    <section id="sec-games" class="section" data-section="games" aria-label="游戏作品"></section>
+    <section id="sec-timeline" class="section" data-section="timeline" aria-label="经历时间轴"></section>
+    <section id="sec-contact" class="section" data-section="contact" aria-label="联系方式"></section>
+  </main>
+
+  <!-- 金缮过渡叠层 -->
+  <div id="kintsugi-overlay" aria-hidden="true"></div>
+
+  <!-- 墨晕过渡叠层 -->
+  <div id="ink-ripple-overlay" aria-hidden="true">
+    <canvas id="ink-ripple-canvas"></canvas>
+  </div>
+
+  <!-- 四季切换器 -->
+  <nav id="season-switcher" aria-label="季节切换">
+    <button data-season="spring" type="button" title="春">春</button>
+    <button data-season="summer" type="button" title="夏">夏</button>
+    <button data-season="autumn" type="button" title="秋">秋</button>
+    <button data-season="winter" type="button" title="冬">冬</button>
+  </nav>
+
+  <!-- 探索进度（加分项，后续接入） -->
+  <div id="explore-progress" aria-hidden="true">
+    <span class="progress-label">展卷</span>
+    <span class="progress-value">0%</span>
+  </div>
+
+  <!-- 项目详情卷 overlay（动态填充） -->
+  <div id="project-detail-overlay" aria-hidden="true" role="dialog" aria-modal="true"></div>
+
+  <!-- 第三方库：CDN 引入 -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+
+  <!-- 应用脚本：ES Module 入口 -->
+  <script type="module" src="js/core/init.js"></script>
+</body>
+</html>
