@@ -16,6 +16,7 @@ import { renderContact } from '../sections/contact.js';
 import { initThreeScene } from '../three/scene.js';
 import { createWorld } from '../three/world.js';
 import { tickPools } from '../three/pool.js';
+import { createSections3D, tickSections3D } from '../three/sections3d.js';
 import { enhanceTitles } from '../effects/calligraphy-particles.js';
 
 function guardGsap() {
@@ -28,22 +29,27 @@ function guardGsap() {
 }
 
 // 启动 3D 场景；失败则走 2D 降级
-function bootThree() {
+function bootThree(data) {
   try {
     const s = initThreeScene();
     const world = createWorld(s.uniforms);
     s.scene.add(world);
     s.world = world;
+    // 七板块 3D 景致
+    s.sections3d = createSections3D(s.scene, data, s.uniforms);
     // 季节切换更新 3D uniform
     onSeasonChange((season) => s.applySeason(SEASON_VARS[season]));
     // 渲染循环
     let last = performance.now();
+    let tAccum = 0;
     function loop(t) {
       const dt = (t - last) / 1000;
       last = t;
+      tAccum += dt;
       const progress = getProgress();
       s.update(progress, dt);
       tickPools(dt);
+      tickSections3D(s.sections3d, tAccum, dt, progress);
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
@@ -52,7 +58,6 @@ function bootThree() {
   } catch (e) {
     console.warn('[init] 3D 启动失败，降级为纯 2D 模式:', e.message);
     state.has3D = false;
-    // 隐藏 3D 容器
     const host = document.getElementById('three-canvas');
     if (host) host.style.display = 'none';
     return null;
@@ -83,7 +88,7 @@ async function main() {
   renderContact(document.getElementById('sec-contact'), data.contact);
 
   // 5. 启动 3D 场景（在 loading 之前，让 loading 背景后已有 3D）
-  bootThree();
+  bootThree(data);
 
   // 5.5 等字体加载后增强标题为书法粒子
   const titleControllers = {};
