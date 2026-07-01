@@ -1,6 +1,7 @@
 // 板块路由：基于 ScrollTrigger 调度板块激活/卸载、金缮过渡、进度更新。
 import { state } from './state.js';
 import { playKintsugiTransition } from '../effects/kintsugi.js';
+import { playInkRipple } from '../effects/ink-ripple.js';
 
 let ST = null;
 function getST() {
@@ -41,9 +42,10 @@ function activate(name, callbacks) {
   state.activatedSections.add(name);
   callbacks[name]?.activate?.();
   updateProgress();
-  // 板块切换金缮过渡（跳过首次及 reduced motion）
+  // 板块切换金缮过渡 + 墨晕（跳过首次及 reduced motion）
   if (prev && !state.reducedMotion) {
     playKintsugiTransition();
+    playInkRipple();
   }
 }
 

@@ -16,6 +16,7 @@ import { renderContact } from '../sections/contact.js';
 import { initThreeScene } from '../three/scene.js';
 import { createWorld } from '../three/world.js';
 import { tickPools } from '../three/pool.js';
+import { enhanceTitles } from '../effects/calligraphy-particles.js';
 
 function guardGsap() {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -84,6 +85,17 @@ async function main() {
   // 5. 启动 3D 场景（在 loading 之前，让 loading 背景后已有 3D）
   bootThree();
 
+  // 5.5 等字体加载后增强标题为书法粒子
+  const titleControllers = {};
+  if (document.fonts && document.fonts.ready) {
+    await document.fonts.ready;
+  }
+  const sectionNames = ['about', 'skills', 'projects', 'data', 'games', 'timeline', 'contact'];
+  sectionNames.forEach((name) => {
+    const el = document.getElementById(`sec-${name}`);
+    if (el) titleControllers[name] = enhanceTitles(el);
+  });
+
   // 6. 开卷仪式 → 启动滚动
   await playLoadingSequence(data.profile);
 
@@ -92,21 +104,22 @@ async function main() {
 
   // 8. 板块路由与触发器
   registerSections(
-    ['about', 'skills', 'projects', 'data', 'games', 'timeline', 'contact'],
+    sectionNames,
     {
-      about: { activate() {} },
-      skills: { activate() { animateSkillsBars(document.getElementById('sec-skills')); } },
-      projects: { activate() {} },
-      data: { activate() { drawCharts(document.getElementById('sec-data'), data.metrics); } },
-      games: { activate() {} },
-      timeline: { activate() { animateTimeline(document.getElementById('sec-timeline')); } },
-      contact: { activate() {} },
+      about: { activate() { titleControllers.about?.animateIn(); } },
+      skills: { activate() { titleControllers.skills?.animateIn(); animateSkillsBars(document.getElementById('sec-skills')); } },
+      projects: { activate() { titleControllers.projects?.animateIn(); } },
+      data: { activate() { titleControllers.data?.animateIn(); drawCharts(document.getElementById('sec-data'), data.metrics); } },
+      games: { activate() { titleControllers.games?.animateIn(); } },
+      timeline: { activate() { titleControllers.timeline?.animateIn(); animateTimeline(document.getElementById('sec-timeline')); } },
+      contact: { activate() { titleControllers.contact?.animateIn(); } },
     },
   );
 
   // 9. 初始触发首屏板块动画
   requestAnimationFrame(() => {
     if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    titleControllers.about?.animateIn();
     animateSkillsBars(document.getElementById('sec-skills'));
     animateTimeline(document.getElementById('sec-timeline'));
   });
