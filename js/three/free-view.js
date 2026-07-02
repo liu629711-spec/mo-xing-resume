@@ -1,94 +1,118 @@
-// 3D 自由视角模式：点击空白处进入自由视角，可拖拽旋转摄像机视角，
-// 再次点击空白或按 Esc 退出回到展卷视角。
-// 滚动驱动 X 推进（展卷），自由视角驱动视角旋转（环顾），两者叠加但不冲突。
-
+// 3D 自由飞行视角：点击空白进入，WASD 移动、空格上升、Ctrl 下降，
+// 鼠标拖拽转视角，自由穿梭 3D 山水。再次点击空白或 Esc 退出。
+// 穿梭时 3D 背景跟随自由位置，HTML 内容层保持展示不受影响。
 const THREE = window.THREE;
+
+const MOVE_SPEED = 7;        // 单位/秒
+const SPRINT_MULT = 2.2;     // Shift 加速
+const YAW_SENS = 0.0035;     // 水平转视角灵敏度
+const PITCH_SENS = 0.003;    // 俯仰灵敏度
+const PITCH_LIMIT = 1.15;
+const BASE_Y = 2.4;
+const BASE_Z = 10;
 
 export function initFreeView(sceneObj) {
   if (!sceneObj) return;
   const { camera, renderer } = sceneObj;
-  const host = renderer.domElement.parentElement; // #three-canvas
 
-  // 自由视角状态
   const view = {
     active: false,
-    azimuth: 0,      // 水平旋转角（绕 Y）
-    pitch: 0,        // 俯仰角
-    targetAzimuth: 0,
-    targetPitch: 0,
-    dragging: false,
-    lastX: 0, lastY: 0,
+    // 自由位置与朝向
+    pos: new THREE.Vector3(),
+    yaw: 0,
+    pitch: 0,
+    // 平滑退出目标
+    exiting: false,
   };
 
-  // 默认展卷视角偏移
-  const DEFAULT_AZ = 0;
-  const DEFAULT_PITCH = 0;
+  const keys = new Set();
+  let dragging = false;
+  let lastX = 0, lastY = 0;
 
-  // 摄像机基础参数（展卷视角）：position (x, 2.4, 10)，看向 (x+10, 1.2, 0)
-  // 自由视角在基础位置上叠加 azimuth/pitch 旋转
-  const BASE_Y = 2.4;
-  const BASE_Z = 10;
-  const LOOK_OFFSET_X = 10;
-  const LOOK_OFFSET_Y = 1.2;
-
-  // 暴露给 scene.update 的视角覆盖
-  sceneObj.freeView = view;
-
-  // 覆盖 scene.update 里的 lookAt，加入自由视角旋转
-  const origUpdate = sceneObj.update;
+  // 覆盖 scene.update：自由视角激活时用自由位置，否则用滚动位置
   sceneObj.update = function (progress, dt) {
     sceneObj.uniforms.uTime.value += dt;
-    // 摄像机 X 由滚动决定
-    const camX = progress * 70;
-    camera.position.x = camX;
-    camera.position.y = BASE_Y + Math.sin(view.pitch) * 4;
-    camera.position.z = BASE_Z * Math.cos(view.azimuth) * Math.cos(view.pitch);
-    // 视角中心点（带 azimuth 偏移）
-    const lookX = camX + LOOK_OFFSET_X * Math.cos(view.azimuth);
-    const lookY = LOOK_OFFSET_Y - Math.sin(view.pitch) * 3;
-    const lookZ = -LOOK_OFFSET_X * Math.sin(view.azimuth) * 0.3;
-    camera.lookAt(lookX, lookY, lookZ);
+
+    if (view.active || view.exiting) {
+      // 自由飞行：位置由 view.pos 控制
+      camera.position.copy(view.pos);
+      const fwd = forwardVec(view.yaw, view.pitch);
+      camera.lookAt(view.pos.x + fwd.x, view.pos.y + fwd.y, view.pos.z + fwd.z);
+      if (view.exiting) {
+        // 退出过渡：pos 朝滚动位置插值，yaw/pitch 朝 0 插值
+        const targetX = progress * 70;
+        view.pos.x += (targetX - view.pos.x) * 0.08;
+        view.pos.y += (BASE_Y - view.pos.y) * 0.08;
+        view.pos.z += (BASE_Z - view.pos.z) * 0.08;
+        view.yaw += (0 - view.yaw) * 0.08;
+        view.pitch += (0 - view.pitch) * 0.08;
+        if (Math.abs(view.pos.x - targetX) < 0.05 && Math.abs(view.yaw) < 0.01) {
+          view.exiting = false;
+        }
+      }
+    } else {
+      // 展卷模式：摄像机沿 X 推进
+      const camX = progress * 70;
+      camera.position.set(camX, BASE_Y, BASE_Z);
+      camera.lookAt(camX + 10, 1.2, 0);
+    }
     renderer.render(sceneObj.scene, camera);
   };
 
-  // 判断点击是否在空白处：只排除明确的交互元素，其余都算空白
-  // （包括 body、section 容器、装饰元素等），保证进入/退出都能触发
-  const INTERACTIVE_SELECTOR = [
-    '.ink-card', '.peak-card', '.stele', '.contact-item',
-    '.skill-item', '.skill-category', '.timeline-node',
-    'button', 'a', 'input', 'textarea', 'select',
-    '[role="button"]', '[tabindex]',
-    '#season-switcher', '#project-detail-overlay',
-    '.free-view-hint', '#skip-loading', '.detail-close',
-  ].join(',');
-
-  function isBlank(target) {
-    if (!target) return true;
-    if (target.closest && target.closest(INTERACTIVE_SELECTOR)) return false;
-    return true;
+  // 持续 tick：根据按键应用移动
+  function tick() {
+    if (view.active && !view.exiting) {
+      const sprint = keys.has('shift') ? SPRINT_MULT : 1;
+      const speed = MOVE_SPEED * sprint * (1 / 60); // 近似 dt
+      const fwd = forwardVec(view.yaw, view.pitch);
+      const right = rightVec(view.yaw);
+      if (keys.has('w')) view.pos.addScaledVector(fwd, speed);
+      if (keys.has('s')) view.pos.addScaledVector(fwd, -speed);
+      if (keys.has('d')) view.pos.addScaledVector(right, speed);
+      if (keys.has('a')) view.pos.addScaledVector(right, -speed);
+      if (keys.has('space')) view.pos.y += speed;
+      if (keys.has('control')) view.pos.y -= speed;
+      // 限制不要飞太远
+      view.pos.x = clamp(view.pos.x, -15, 85);
+      view.pos.y = clamp(view.pos.y, -3, 12);
+      view.pos.z = clamp(view.pos.z, -25, 18);
+    }
+    requestAnimationFrame(tick);
   }
+  tick();
 
+  // --- 进入/退出 ---
   function enterFreeView() {
     if (view.active) return;
     view.active = true;
+    view.exiting = false;
+    // 从当前摄像机位置开始，避免跳变
+    view.pos.copy(camera.position);
+    view.yaw = 0;
+    view.pitch = 0;
     document.body.classList.add('free-view');
     showHint();
   }
   function exitFreeView() {
     if (!view.active) return;
     view.active = false;
-    view.targetAzimuth = DEFAULT_AZ;
-    view.targetPitch = DEFAULT_PITCH;
+    view.exiting = true; // 触发退出过渡
     document.body.classList.remove('free-view');
     hideHint();
   }
 
+  // --- 提示条 ---
   let hintEl = null;
   function showHint() {
     if (hintEl) return;
     hintEl = document.createElement('div');
     hintEl.className = 'free-view-hint';
-    hintEl.textContent = '自由视角 · 拖拽环顾山河，再点空白或按 Esc 退出';
+    hintEl.innerHTML = `
+      <span class="fv-title">自由穿梭</span>
+      <span class="fv-keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动</span>
+      <span class="fv-keys"><kbd>Space</kbd> 上升 · <kbd>Ctrl</kbd> 下降 · <kbd>Shift</kbd> 加速</span>
+      <span class="fv-keys">拖拽转视角 · <kbd>Esc</kbd> 退出</span>
+    `;
     document.body.appendChild(hintEl);
     requestAnimationFrame(() => hintEl.classList.add('is-show'));
   }
@@ -100,99 +124,130 @@ export function initFreeView(sceneObj) {
     setTimeout(() => el.remove(), 400);
   }
 
-  // 平滑插值视角
-  function tickView() {
-    view.azimuth += (view.targetAzimuth - view.azimuth) * 0.1;
-    view.pitch += (view.targetPitch - view.pitch) * 0.1;
-    requestAnimationFrame(tickView);
+  // --- 交互元素白名单（点击这些不触发自由视角） ---
+  const INTERACTIVE = [
+    '.ink-card', '.peak-card', '.stele', '.contact-item',
+    '.skill-item', '.skill-category', '.timeline-node',
+    'button', 'a', 'input', 'textarea', 'select',
+    '[role="button"]', '[tabindex]',
+    '#season-switcher', '#project-detail-overlay',
+    '.free-view-hint', '#skip-loading', '.detail-close',
+  ].join(',');
+  function isBlank(target) {
+    if (!target) return true;
+    if (target.closest && target.closest(INTERACTIVE)) return false;
+    return true;
   }
-  tickView();
 
-  // 监听点击（mousedown 判定，mouseup 检测是否拖拽）
+  // --- 鼠标点击/拖拽 ---
   let mouseDownTarget = null;
-  let mouseDownPos = null;
   let movedDuringDrag = false;
 
   document.addEventListener('mousedown', (e) => {
     mouseDownTarget = e.target;
-    mouseDownPos = { x: e.clientX, y: e.clientY };
     movedDuringDrag = false;
     if (view.active && isBlank(e.target)) {
-      view.dragging = true;
-      view.lastX = e.clientX;
-      view.lastY = e.clientY;
+      dragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
     }
   });
 
   document.addEventListener('mousemove', (e) => {
-    if (!view.active || !view.dragging) return;
-    const dx = e.clientX - view.lastX;
-    const dy = e.clientY - view.lastY;
+    if (!view.active || !dragging) return;
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
     if (Math.abs(dx) + Math.abs(dy) > 2) movedDuringDrag = true;
-    view.targetAzimuth += dx * 0.005;
-    view.targetPitch = clamp(view.targetPitch + dy * 0.004, -0.6, 0.6);
-    view.lastX = e.clientX;
-    view.lastY = e.clientY;
+    view.yaw -= dx * YAW_SENS;
+    view.pitch = clamp(view.pitch - dy * PITCH_SENS, -PITCH_LIMIT, PITCH_LIMIT);
+    lastX = e.clientX;
+    lastY = e.clientY;
   });
 
-  document.addEventListener('mouseup', (e) => {
-    if (view.dragging) {
-      view.dragging = false;
-      // 如果是拖拽（有移动），不触发进入/退出
-      if (movedDuringDrag) {
-        mouseDownTarget = null;
-        return;
-      }
-    }
-    // 单击空白：切换自由视角
-    if (mouseDownTarget && isBlank(mouseDownTarget) && !movedDuringDrag) {
-      if (view.active) exitFreeView();
-      else enterFreeView();
-    }
-    mouseDownTarget = null;
-  });
-
-  // 触摸支持
-  document.addEventListener('touchstart', (e) => {
-    const t = e.touches[0];
-    mouseDownTarget = e.target;
-    mouseDownPos = { x: t.clientX, y: t.clientY };
-    movedDuringDrag = false;
-    if (view.active && isBlank(e.target)) {
-      view.dragging = true;
-      view.lastX = t.clientX;
-      view.lastY = t.clientY;
-    }
-  }, { passive: true });
-  document.addEventListener('touchmove', (e) => {
-    if (!view.active || !view.dragging) return;
-    const t = e.touches[0];
-    const dx = t.clientX - view.lastX;
-    const dy = t.clientY - view.lastY;
-    if (Math.abs(dx) + Math.abs(dy) > 2) movedDuringDrag = true;
-    view.targetAzimuth += dx * 0.005;
-    view.targetPitch = clamp(view.targetPitch + dy * 0.004, -0.6, 0.6);
-    view.lastX = t.clientX;
-    view.lastY = t.clientY;
-  }, { passive: true });
-  document.addEventListener('touchend', () => {
-    if (view.dragging) {
-      view.dragging = false;
+  document.addEventListener('mouseup', () => {
+    if (dragging) {
+      dragging = false;
       if (movedDuringDrag) { mouseDownTarget = null; return; }
     }
     if (mouseDownTarget && isBlank(mouseDownTarget) && !movedDuringDrag) {
-      if (view.active) exitFreeView();
+      if (view.active || view.exiting) exitFreeView();
       else enterFreeView();
     }
     mouseDownTarget = null;
   });
 
-  // Esc 退出
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && view.active) exitFreeView();
+  // 触摸
+  document.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    mouseDownTarget = e.target;
+    movedDuringDrag = false;
+    if (view.active && isBlank(e.target)) {
+      dragging = true;
+      lastX = t.clientX;
+      lastY = t.clientY;
+    }
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!view.active || !dragging) return;
+    const t = e.touches[0];
+    const dx = t.clientX - lastX;
+    const dy = t.clientY - lastY;
+    if (Math.abs(dx) + Math.abs(dy) > 2) movedDuringDrag = true;
+    view.yaw -= dx * YAW_SENS;
+    view.pitch = clamp(view.pitch - dy * PITCH_SENS, -PITCH_LIMIT, PITCH_LIMIT);
+    lastX = t.clientX;
+    lastY = t.clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', () => {
+    if (dragging) {
+      dragging = false;
+      if (movedDuringDrag) { mouseDownTarget = null; return; }
+    }
+    if (mouseDownTarget && isBlank(mouseDownTarget) && !movedDuringDrag) {
+      if (view.active || view.exiting) exitFreeView();
+      else enterFreeView();
+    }
+    mouseDownTarget = null;
   });
+
+  // --- 键盘 ---
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { if (view.active || view.exiting) exitFreeView(); return; }
+    if (!view.active) return;
+    const k = normalizeKey(e.key);
+    if (k) {
+      // 阻止空格滚动页面、Ctrl 保存等默认行为
+      if (k === 'space' || k === 'control') e.preventDefault();
+      keys.add(k);
+    }
+  });
+  document.addEventListener('keyup', (e) => {
+    const k = normalizeKey(e.key);
+    if (k) keys.delete(k);
+  });
+  // 窗口失焦清空按键，避免卡键
+  window.addEventListener('blur', () => keys.clear());
 
   return view;
 }
 
+function normalizeKey(key) {
+  const k = key.toLowerCase();
+  if (k === 'w' || k === 'a' || k === 's' || k === 'd') return k;
+  if (key === ' ' || k === 'space' || key === 'Spacebar') return 'space';
+  if (k === 'control' || k === 'ctrl') return 'control';
+  if (k === 'shift') return 'shift';
+  return null;
+}
+
+function forwardVec(yaw, pitch) {
+  return new THREE.Vector3(
+    Math.sin(yaw) * Math.cos(pitch),
+    Math.sin(pitch),
+    -Math.cos(yaw) * Math.cos(pitch),
+  );
+}
+function rightVec(yaw) {
+  return new THREE.Vector3(Math.cos(yaw), 0, Math.sin(yaw));
+}
 function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
