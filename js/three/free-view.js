@@ -82,22 +82,24 @@ export function initFreeView(sceneObj) {
   tick();
 
   // --- 进入/退出 ---
+  const toggleBtnRef = document.getElementById('free-view-toggle');
   function enterFreeView() {
     if (view.active) return;
     view.active = true;
     view.exiting = false;
-    // 从当前摄像机位置开始，避免跳变
     view.pos.copy(camera.position);
     view.yaw = 0;
     view.pitch = 0;
     document.body.classList.add('free-view');
+    if (toggleBtnRef) toggleBtnRef.classList.add('is-active');
     showHint();
   }
   function exitFreeView() {
     if (!view.active) return;
     view.active = false;
-    view.exiting = true; // 触发退出过渡
+    view.exiting = true;
     document.body.classList.remove('free-view');
+    if (toggleBtnRef) toggleBtnRef.classList.remove('is-active');
     hideHint();
   }
 
@@ -111,7 +113,7 @@ export function initFreeView(sceneObj) {
       <span class="fv-title">自由穿梭</span>
       <span class="fv-keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动</span>
       <span class="fv-keys"><kbd>Space</kbd> 上升 · <kbd>Ctrl</kbd> 下降 · <kbd>Shift</kbd> 加速</span>
-      <span class="fv-keys">拖拽转视角 · <kbd>Esc</kbd> 退出</span>
+      <span class="fv-keys">拖拽转视角 · 再点 <kbd>游</kbd> 或 <kbd>Esc</kbd> 退出</span>
     `;
     document.body.appendChild(hintEl);
     requestAnimationFrame(() => hintEl.classList.add('is-show'));
@@ -124,7 +126,7 @@ export function initFreeView(sceneObj) {
     setTimeout(() => el.remove(), 400);
   }
 
-  // --- 交互元素白名单（点击这些不触发自由视角） ---
+  // --- 交互元素白名单（拖拽转视角时判定是否在空白处） ---
   const INTERACTIVE = [
     '.ink-card', '.peak-card', '.stele', '.contact-item',
     '.skill-item', '.skill-category', '.timeline-node',
@@ -139,7 +141,16 @@ export function initFreeView(sceneObj) {
     return true;
   }
 
-  // --- 鼠标点击/拖拽 ---
+  // --- 开启按钮（四季切换器左侧"游"） ---
+  const toggleBtn = document.getElementById('free-view-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      if (view.active || view.exiting) exitFreeView();
+      else enterFreeView();
+    });
+  }
+
+  // --- 鼠标拖拽转视角（仅激活时） ---
   let mouseDownTarget = null;
   let movedDuringDrag = false;
 
@@ -167,13 +178,8 @@ export function initFreeView(sceneObj) {
   document.addEventListener('mouseup', () => {
     if (dragging) {
       dragging = false;
-      if (movedDuringDrag) { mouseDownTarget = null; return; }
+      mouseDownTarget = null;
     }
-    if (mouseDownTarget && isBlank(mouseDownTarget) && !movedDuringDrag) {
-      if (view.active || view.exiting) exitFreeView();
-      else enterFreeView();
-    }
-    mouseDownTarget = null;
   });
 
   // 触摸
@@ -201,13 +207,8 @@ export function initFreeView(sceneObj) {
   document.addEventListener('touchend', () => {
     if (dragging) {
       dragging = false;
-      if (movedDuringDrag) { mouseDownTarget = null; return; }
+      mouseDownTarget = null;
     }
-    if (mouseDownTarget && isBlank(mouseDownTarget) && !movedDuringDrag) {
-      if (view.active || view.exiting) exitFreeView();
-      else enterFreeView();
-    }
-    mouseDownTarget = null;
   });
 
   // --- 键盘 ---

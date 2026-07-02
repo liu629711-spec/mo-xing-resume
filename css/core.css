@@ -195,6 +195,39 @@ body {
   opacity: 1;
   background: color-mix(in srgb, var(--ink) 10%, transparent);
 }
+/* 飞行开关按钮（左侧） */
+#free-view-toggle {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-title);
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0.45;
+  transition: opacity 0.3s, background-color 0.3s, transform 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#free-view-toggle:hover {
+  opacity: 0.85;
+  transform: scale(1.08);
+}
+#free-view-toggle.is-active {
+  opacity: 1;
+  background: var(--ink);
+  color: var(--paper);
+}
+.switcher-divider {
+  width: 1px;
+  height: 1.4rem;
+  background: color-mix(in srgb, var(--ink) 20%, transparent);
+  align-self: center;
+  flex-shrink: 0;
+}
 
 /* 探索进度 */
 #explore-progress {

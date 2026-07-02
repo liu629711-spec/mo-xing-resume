@@ -47,8 +47,10 @@
     <canvas id="ink-ripple-canvas"></canvas>
   </div>
 
-  <!-- 四季切换器 -->
-  <nav id="season-switcher" aria-label="季节切换">
+  <!-- 四季切换器 + 飞行模式开关 -->
+  <nav id="season-switcher" aria-label="季节与视角切换">
+    <button id="free-view-toggle" type="button" title="自由飞行视角" aria-label="开启自由飞行视角">游</button>
+    <span class="switcher-divider" aria-hidden="true"></span>
     <button data-season="spring" type="button" title="春">春</button>
     <button data-season="summer" type="button" title="夏">夏</button>
     <button data-season="autumn" type="button" title="秋">秋</button>
