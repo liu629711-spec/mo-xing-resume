@@ -18,6 +18,7 @@ import { createWorld } from '../three/world.js';
 import { tickPools } from '../three/pool.js';
 import { createSections3D, tickSections3D } from '../three/sections3d.js';
 import { enhanceTitles } from '../effects/calligraphy-particles.js';
+import { initSeasonParticles, setSeasonParticles } from '../effects/season-particles.js';
 
 function guardGsap() {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -79,6 +80,9 @@ async function main() {
   setSeason(currentSeason());
   initSeasonSwitcher();
   onSeasonChange(() => refreshPaperBg());
+  onSeasonChange((season) => setSeasonParticles(season, true));
+  initSeasonParticles();
+  setSeasonParticles(currentSeason(), false);
 
   // 2. 宣纸底纹
   initPaperBg();

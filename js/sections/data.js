@@ -23,12 +23,22 @@ export function renderData(el, metrics) {
   `;
 }
 
-// 进入视口时绘制（墨笔动画）
+// 进入视口时绘制（墨笔动画）。重绘前清空旧 svg，避免重复堆叠。
 export function drawCharts(el, metrics) {
   if (typeof d3 === 'undefined') return;
+  clearChart(el, '#chart-dau');
+  clearChart(el, '#chart-source');
+  clearChart(el, '#chart-roi');
   drawDauCurve(el, metrics.dauCurve);
   drawUserSources(el, metrics.userSources);
   drawRoiBars(el, metrics.roiBars);
+}
+
+function clearChart(el, selector) {
+  const host = el.querySelector(selector);
+  if (!host) return;
+  // 保留 h4 标题，移除 svg
+  host.querySelectorAll('svg').forEach((s) => s.remove());
 }
 
 function inkColor() {
