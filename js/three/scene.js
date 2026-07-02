@@ -59,6 +59,8 @@ export function initThreeScene() {
     uInkColor: { value: new THREE.Color(...hexToRgb(readVar('--ink', '#141414'))) },
     uGoldColor: { value: new THREE.Color(...hexToRgb(readVar('--gold', '#D4AF37'))) },
     uAccentColor: { value: new THREE.Color(...hexToRgb(readVar('--accent', '#B5483A'))) },
+    uSeasonTint: { value: new THREE.Color(...hexToRgb('#B5483A')) },
+    uSnowMix: { value: 0 },
   };
 
   // 摄像机平滑推进
@@ -84,17 +86,31 @@ export function initThreeScene() {
   }
   window.addEventListener('resize', onResize);
 
-  // 季节切换更新 uniform + 雾色
+  // 季节切换更新 uniform + 雾色（GSAP 平滑过渡）
   function applySeason(seasonVars) {
     const p = hexToRgb(seasonVars.paper);
     const i = hexToRgb(seasonVars.ink);
     const g = hexToRgb(seasonVars.gold);
     const a = hexToRgb(seasonVars.accent);
-    uniforms.uPaperColor.value.setRGB(p[0], p[1], p[2]);
-    uniforms.uInkColor.value.setRGB(i[0], i[1], i[2]);
-    uniforms.uGoldColor.value.setRGB(g[0], g[1], g[2]);
-    uniforms.uAccentColor.value.setRGB(a[0], a[1], a[2]);
-    scene.fog.color.setRGB(p[0], p[1], p[2]);
+    const t = hexToRgb(seasonVars.tint || '#B5483A');
+    const snow = seasonVars.snowMix || 0;
+    if (typeof gsap !== 'undefined') {
+      gsap.to(uniforms.uPaperColor.value, { r: p[0], g: p[1], b: p[2], duration: 1.2, ease: 'power2.inOut' });
+      gsap.to(uniforms.uInkColor.value, { r: i[0], g: i[1], b: i[2], duration: 1.2, ease: 'power2.inOut' });
+      gsap.to(uniforms.uGoldColor.value, { r: g[0], g: g[1], b: g[2], duration: 1.2, ease: 'power2.inOut' });
+      gsap.to(uniforms.uAccentColor.value, { r: a[0], g: a[1], b: a[2], duration: 1.2, ease: 'power2.inOut' });
+      gsap.to(uniforms.uSeasonTint.value, { r: t[0], g: t[1], b: t[2], duration: 1.2, ease: 'power2.inOut' });
+      gsap.to(uniforms.uSnowMix, { value: snow, duration: 1.2, ease: 'power2.inOut' });
+      gsap.to(scene.fog.color, { r: p[0], g: p[1], b: p[2], duration: 1.2, ease: 'power2.inOut' });
+    } else {
+      uniforms.uPaperColor.value.setRGB(p[0], p[1], p[2]);
+      uniforms.uInkColor.value.setRGB(i[0], i[1], i[2]);
+      uniforms.uGoldColor.value.setRGB(g[0], g[1], g[2]);
+      uniforms.uAccentColor.value.setRGB(a[0], a[1], a[2]);
+      uniforms.uSeasonTint.value.setRGB(t[0], t[1], t[2]);
+      uniforms.uSnowMix.value = snow;
+      scene.fog.color.setRGB(p[0], p[1], p[2]);
+    }
   }
 
   sceneObj = { renderer, scene, camera, uniforms, update, applySeason, host };

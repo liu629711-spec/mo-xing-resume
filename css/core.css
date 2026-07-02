@@ -230,3 +230,35 @@ body {
 #project-detail-overlay.is-open {
   display: flex;
 }
+
+/* 自由视角模式 */
+body.free-view {
+  cursor: grab;
+}
+body.free-view:active {
+  cursor: grabbing;
+}
+body.free-view #scroll-container {
+  pointer-events: none;
+}
+.free-view-hint {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.7rem 1.4rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  z-index: 70;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s, transform 0.4s var(--ease-ink);
+  font-family: var(--font-body);
+}
+.free-view-hint.is-show {
+  opacity: 0.92;
+  transform: translateX(-50%) translateY(0);
+}

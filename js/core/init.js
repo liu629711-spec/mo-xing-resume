@@ -19,6 +19,8 @@ import { tickPools } from '../three/pool.js';
 import { createSections3D, tickSections3D } from '../three/sections3d.js';
 import { enhanceTitles } from '../effects/calligraphy-particles.js';
 import { initSeasonParticles, setSeasonParticles } from '../effects/season-particles.js';
+import { playSeasonWave } from '../effects/season-wave.js';
+import { initFreeView } from '../three/free-view.js';
 
 function guardGsap() {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -46,8 +48,13 @@ function bootThree(data) {
     s.world = world;
     // 七板块 3D 景致
     s.sections3d = createSections3D(s.scene, data, s.uniforms);
-    // 季节切换更新 3D uniform
+    // 季节切换更新 3D uniform + 山间季节装饰
     onSeasonChange((season) => s.applySeason(SEASON_VARS[season]));
+    onSeasonChange((season) => s.world?.userData?.setSeason?.(season));
+    // 首次显示当前季节装饰
+    s.world?.userData?.setSeason?.(currentSeason());
+    // 自由视角交互
+    initFreeView(s);
     // 渲染循环
     let last = performance.now();
     let tAccum = 0;
@@ -57,6 +64,7 @@ function bootThree(data) {
       tAccum += dt;
       const progress = getProgress();
       s.update(progress, dt);
+      s.world?.userData?.tickDeco?.();
       tickPools(dt);
       tickSections3D(s.sections3d, tAccum, dt, progress);
       requestAnimationFrame(loop);
@@ -81,6 +89,7 @@ async function main() {
   initSeasonSwitcher();
   onSeasonChange(() => refreshPaperBg());
   onSeasonChange((season) => setSeasonParticles(season, true));
+  onSeasonChange((_season, _vars, fromEl) => playSeasonWave(fromEl));
   initSeasonParticles();
   setSeasonParticles(currentSeason(), false);
 

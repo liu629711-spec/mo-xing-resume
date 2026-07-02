@@ -1,10 +1,10 @@
 // 四季流转系统：根据本地月份决定季节，提供色值并写入 CSS 变量。
 
 export const SEASON_VARS = {
-  spring: { paper: '#F5EFE0', ink: '#1A1A1A', gold: '#C9A961', accent: '#E8B4B8' },
-  summer: { paper: '#E8EDE8', ink: '#0D0D0D', gold: '#B89968', accent: '#6B8E7F' },
-  autumn: { paper: '#EDE4D3', ink: '#141414', gold: '#D4AF37', accent: '#B5483A' },
-  winter: { paper: '#F0F0F2', ink: '#2A2A2A', gold: '#A8A8B0', accent: '#B8C5D6' },
+  spring: { paper: '#F5EFE0', ink: '#1A1A1A', gold: '#C9A961', accent: '#E8B4B8', tint: '#8BAA8B', snowMix: 0.0 },
+  summer: { paper: '#E8EDE8', ink: '#0D0D0D', gold: '#B89968', accent: '#6B8E7F', tint: '#5C8A6A', snowMix: 0.0 },
+  autumn: { paper: '#EDE4D3', ink: '#141414', gold: '#D4AF37', accent: '#B5483A', tint: '#B5483A', snowMix: 0.0 },
+  winter: { paper: '#F0F0F2', ink: '#2A2A2A', gold: '#A8A8B0', accent: '#B8C5D6', tint: '#B8C5D6', snowMix: 0.7 },
 };
 
 export const SEASON_ORDER = ['spring', 'summer', 'autumn', 'winter'];
@@ -41,16 +41,17 @@ export function onSeasonChange(fn) {
   return () => seasonListeners.delete(fn);
 }
 
-function dispatchSeasonChange(season) {
+function dispatchSeasonChange(season, fromEl) {
   for (const fn of seasonListeners) {
-    try { fn(season, SEASON_VARS[season]); } catch (e) { console.warn(e); }
+    try { fn(season, SEASON_VARS[season], fromEl); } catch (e) { console.warn(e); }
   }
 }
 
 // 平滑切换季节：CSS 变量即时设置，transition 由 CSS 处理；通知监听器
-export function setSeason(season) {
+// fromEl: 触发切换的按钮元素（用于转场波纹起点），可选
+export function setSeason(season, fromEl = null) {
   applySeasonVars(season);
-  dispatchSeasonChange(season);
+  dispatchSeasonChange(season, fromEl);
   const switcher = document.getElementById('season-switcher');
   if (switcher) {
     switcher.querySelectorAll('button').forEach((b) => {
@@ -65,7 +66,7 @@ export function initSeasonSwitcher() {
   if (!switcher) return;
   switcher.querySelectorAll('button').forEach((btn) => {
     btn.addEventListener('click', () => {
-      setSeason(btn.dataset.season);
+      setSeason(btn.dataset.season, btn);
     });
   });
   // 标记当前季节

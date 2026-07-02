@@ -39,6 +39,8 @@ export function createMountain(opts = {}) {
       uPaperColor: { value: new THREE.Color(0.93, 0.89, 0.83) },
       uInkColor: { value: new THREE.Color(0.08, 0.08, 0.08) },
       uGoldColor: { value: new THREE.Color(0.83, 0.69, 0.21) },
+      uSeasonTint: { value: new THREE.Color(0.71, 0.28, 0.23) },
+      uSnowMix: { value: 0 },
     },
   });
 

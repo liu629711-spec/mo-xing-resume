@@ -1,14 +1,15 @@
-// 常驻长卷世界：沿 X 轴铺开的水墨山脉 + 流动云海 + 山腰云雾。
-// 这些是全局背景，不随板块卸载。
+// 常驻长卷世界：沿 X 轴铺开的水墨山脉 + 流动云海 + 山腰云雾 + 季节装饰。
 const THREE = window.THREE;
 
 import { createMountainRange } from './terrain.js';
 import { createCloudSea } from './clouds.js';
+import { createSeasonDeco } from './season-deco.js';
 
 export function createWorld(uniforms) {
   const group = new THREE.Group();
+  const decoControllers = [];
 
-  // 山脉：沿 X 从 -5 到 75 铺开（长卷总长 70 + 边距）
+  // 近山 + 每座山挂季节装饰
   const nearRange = createMountainRange({
     count: 9, xStart: -5, spacing: 10,
     heightFn: (i) => 2.2 + Math.abs(Math.sin(i * 1.3)) * 1.4,
@@ -16,8 +17,12 @@ export function createWorld(uniforms) {
   });
   nearRange.position.z = -1.5;
   group.add(nearRange);
+  nearRange.children.forEach((m, i) => {
+    const deco = createSeasonDeco(m, 100 + i * 31);
+    decoControllers.push(deco);
+  });
 
-  // 远山：更淡更高更远
+  // 远山（不加装饰，太远看不清）
   const farRange = createMountainRange({
     count: 7, xStart: -10, spacing: 13,
     heightFn: (i) => 3.5 + Math.abs(Math.cos(i * 0.9)) * 1.8,
@@ -26,12 +31,12 @@ export function createWorld(uniforms) {
   farRange.position.z = -8;
   group.add(farRange);
 
-  // 云海（贯穿长卷）
+  // 云海
   const cloud = createCloudSea({ width: 200, depth: 24, uniforms });
   cloud.position.set(35, 0.3, -3);
   group.add(cloud);
 
-  // 几处山腰云雾
+  // 山腰云雾
   for (let i = 0; i < 5; i++) {
     const mist = makeMistBlob(uniforms);
     mist.position.set(i * 15, 1.0, -2.5);
@@ -39,6 +44,9 @@ export function createWorld(uniforms) {
   }
 
   group.userData.cloud = cloud;
+  group.userData.decoControllers = decoControllers;
+  group.userData.setSeason = (season) => decoControllers.forEach((d) => d.show(season));
+  group.userData.tickDeco = () => decoControllers.forEach((d) => d.tick());
   return group;
 }
 

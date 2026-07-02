@@ -39,6 +39,18 @@ describe('SEASON_VARS', () => {
       expect(v.accent).toMatch(/^#[0-9A-Fa-f]{6}$/);
     }
   });
+  it('四季都有 tint 色值与 snowMix 数值', () => {
+    for (const s of ['spring', 'summer', 'autumn', 'winter']) {
+      const v = SEASON_VARS[s];
+      expect(v.tint).toMatch(/^#[0-9A-Fa-f]{6}$/);
+      expect(typeof v.snowMix).toBe('number');
+      expect(v.snowMix).toBeGreaterThanOrEqual(0);
+      expect(v.snowMix).toBeLessThanOrEqual(1);
+    }
+  });
+  it('冬季雪覆量最高', () => {
+    expect(SEASON_VARS.winter.snowMix).toBeGreaterThan(SEASON_VARS.autumn.snowMix);
+  });
 });
 
 describe('applySeasonVars', () => {

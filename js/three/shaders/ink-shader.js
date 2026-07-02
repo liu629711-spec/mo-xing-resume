@@ -21,6 +21,8 @@ export const inkFragmentShader = /* glsl */ `
   uniform vec3 uPaperColor;
   uniform vec3 uInkColor;
   uniform vec3 uGoldColor;
+  uniform vec3 uSeasonTint;   // 季节特征色（春青/夏翠/秋红/冬雪青）
+  uniform float uSnowMix;      // 雪覆量 0-1（冬高，其他 0）
   varying float vHeight;
   varying vec2 vUv;
   varying vec3 vPos;
@@ -82,6 +84,17 @@ export const inkFragmentShader = /* glsl */ `
     // 山顶微金（日落感）
     float goldMix = smoothstep(0.7, 1.0, h) * (0.15 + bleed * 0.1);
     col = mix(col, uGoldColor, goldMix);
+
+    // 季节特征色：山体中段混入季节色调（春青/夏翠/秋红）
+    float seasonBand = smoothstep(0.2, 0.55, h) * smoothstep(0.9, 0.55, h);
+    col = mix(col, uSeasonTint, seasonBand * 0.35);
+
+    // 雪覆：山顶白雪（冬季）
+    float snowLine = smoothstep(0.55, 0.95, h);
+    col = mix(col, vec3(0.96, 0.97, 0.99), snowLine * uSnowMix);
+    // 雪覆边缘晕染
+    float snowEdge = smoothstep(0.45, 0.6, h) * (1.0 - smoothstep(0.6, 0.75, h));
+    col = mix(col, vec3(0.96, 0.97, 0.99), snowEdge * uSnowMix * 0.5);
 
     gl_FragColor = vec4(col, alpha);
   }
