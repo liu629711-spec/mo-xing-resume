@@ -51,16 +51,21 @@ export function initFreeView(sceneObj) {
     renderer.render(sceneObj.scene, camera);
   };
 
-  // 判断点击是否在空白处（非内容元素）
+  // 判断点击是否在空白处：只排除明确的交互元素，其余都算空白
+  // （包括 body、section 容器、装饰元素等），保证进入/退出都能触发
+  const INTERACTIVE_SELECTOR = [
+    '.ink-card', '.peak-card', '.stele', '.contact-item',
+    '.skill-item', '.skill-category', '.timeline-node',
+    'button', 'a', 'input', 'textarea', 'select',
+    '[role="button"]', '[tabindex]',
+    '#season-switcher', '#project-detail-overlay',
+    '.free-view-hint', '#skip-loading', '.detail-close',
+  ].join(',');
+
   function isBlank(target) {
     if (!target) return true;
-    // 点击 three-canvas 本身或 canvas 即空白
-    if (target.id === 'three-canvas' || target.tagName === 'CANVAS') return true;
-    if (target.id === 'paper-bg') return true;
-    // 点击 section 但非交互元素也算空白（section 是内容容器，但内容卡片应排除）
-    if (target.closest('.ink-card, .peak-card, .stele, .contact-item, .skill-item, button, a, input, [role="button"]')) return false;
-    if (target.closest('.section')) return true;
-    return false;
+    if (target.closest && target.closest(INTERACTIVE_SELECTOR)) return false;
+    return true;
   }
 
   function enterFreeView() {
