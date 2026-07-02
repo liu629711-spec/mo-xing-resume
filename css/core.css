@@ -271,8 +271,18 @@ body.free-view {
 body.free-view:active {
   cursor: grabbing;
 }
-body.free-view #scroll-container {
-  pointer-events: none;
+/* 飞行模式下交互元素恢复 pointer 光标，保持可点击 */
+body.free-view .ink-card,
+body.free-view .peak-card,
+body.free-view .stele,
+body.free-view .contact-item,
+body.free-view .skill-item,
+body.free-view .skill-category,
+body.free-view .timeline-node,
+body.free-view button,
+body.free-view a,
+body.free-view [role="button"] {
+  cursor: pointer;
 }
 .free-view-hint {
   position: fixed;

@@ -213,7 +213,13 @@ export function initFreeView(sceneObj) {
 
   // --- 键盘 ---
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { if (view.active || view.exiting) exitFreeView(); return; }
+    if (e.key === 'Escape') {
+      // 详情卷打开时优先关详情，不退飞行
+      const overlay = document.getElementById('project-detail-overlay');
+      if (overlay && overlay.classList.contains('is-open')) return;
+      if (view.active || view.exiting) exitFreeView();
+      return;
+    }
     if (!view.active) return;
     const k = normalizeKey(e.key);
     if (k) {
