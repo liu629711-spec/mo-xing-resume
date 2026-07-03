@@ -6,8 +6,11 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init -->
-  <!-- 2.x 不支持 locale 汉化，但 UMD 稳定可登录可用；内容字段均为中文 -->
-  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+  <!-- React 16（netlify-cms-app 2.x UMD 把 React 作为外部 peer 依赖，需手动加载；2.x 用 React16） -->
+  <script src="https://unpkg.com/react@16.14.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.production.min.js"></script>
+
+  <!-- netlify-cms-app 2.15.72 UMD：支持 github implicit 直连（不走 Netlify 代理） -->
+  <script src="https://unpkg.com/netlify-cms-app@2.15.72/dist/netlify-cms-app.js"></script>
 </body>
 </html>
