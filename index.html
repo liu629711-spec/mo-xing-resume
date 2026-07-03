@@ -66,12 +66,11 @@
   <!-- 项目详情卷 overlay（动态填充） -->
   <div id="project-detail-overlay" aria-hidden="true" role="dialog" aria-modal="true"></div>
 
-  <!-- Netlify Identity：处理邀请/重置邮件 token，跳到独立 signup 页（避开 Decap CMS hash 路由冲突） -->
+  <!-- Netlify Identity：处理邀请/重置邮件 token，跳到独立 signup 页（带完整 hash） -->
   <script>
     (function () {
       if (location.hash && /token=/.test(location.hash)) {
-        var cleanHash = location.hash.replace(/^#\/?/, '#');
-        location.replace(location.origin + '/signup.html' + cleanHash);
+        location.replace(location.origin + '/signup.html' + location.hash);
       }
     })();
   </script>

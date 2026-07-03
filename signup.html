@@ -23,7 +23,7 @@
   <h2>正在激活账号…</h2>
   <p>请在此页面设置密码，完成后将自动跳转到后台。</p>
 
-  <!-- Netlify Identity widget：官方 CDN，独立加载无 Decap CMS hash 路由干扰，干净处理 invite/recovery token -->
+  <!-- Netlify Identity widget：官方 CDN，独立加载无 Decap CMS hash 路由干扰 -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
     if (window.netlifyIdentity) {
@@ -34,8 +34,19 @@
       // 设完密码 / 登录成功 → 跳后台
       netlifyIdentity.on('login', function () { window.location.href = '/admin/'; });
       netlifyIdentity.on('logout', function () { window.location.href = '/admin/'; });
-      // 主动打开 widget，会自动识别 URL 里的 invite_token 弹"Complete your signup"
-      netlifyIdentity.open();
+
+      // 主动从 URL 提取 token，强制打开对应界面（不依赖 widget 自动处理，避免 token 被静默消费）
+      var hash = location.hash || '';
+      var invite = hash.match(/invite_token=([^&]+)/);
+      var recovery = hash.match(/recovery_token=([^&]+)/);
+      if (invite) {
+        netlifyIdentity.open('invite', invite[1]);
+      } else if (recovery) {
+        netlifyIdentity.open('recovery', recovery[1]);
+      } else {
+        // 没有 token，打开登录
+        netlifyIdentity.open('login');
+      }
     } else {
       document.body.innerHTML += '<p style="color:#c00;margin-top:20px">Identity 组件加载失败，请刷新重试。</p>';
     }
