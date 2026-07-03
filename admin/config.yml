@@ -2,11 +2,9 @@ backend:
   name: github
   repo: liu629711-spec/mo-xing-resume
   branch: main
-  # GitHub backend 不支持 implicit，必须走 OAuth proxy。
-  # 复用 Netlify 站点 lxljianli 的 GitHub OAuth provider（Identity 服务，不耗 build 额度）
-  base_url: https://api.netlify.com
+  # GitHub backend 必须走 OAuth proxy；使用自建 Cloudflare Worker（彻底脱离 Netlify）
+  base_url: https://decap-oauth.lxli629711.workers.dev
   auth_endpoint: auth
-  site_id: lxljianli.netlify.app
   commit_messages:
     create: 'cms: 新建 {{collection}} "{{slug}}"'
     update: 'cms: 更新 {{collection}} "{{slug}}"'
