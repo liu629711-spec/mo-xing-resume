@@ -6,34 +6,11 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- 规范化 hash：去掉 Decap CMS hash 路由的 / 前缀，让 Identity widget 识别 token -->
-  <script>
-    (function () {
-      if (location.hash && /^#\/.*(token=)/.test(location.hash)) {
-        var clean = location.hash.replace(/^#\/?/, '#');
-        history.replaceState(null, '', location.pathname + clean);
-      }
-    })();
-  </script>
-
-  <!-- Netlify Identity widget（处理邀请/重置 token；GitHub OAuth 登录走 CMS 自带流程） -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', (user) => {
-        if (!user) {
-          window.netlifyIdentity.on('login', () => location.reload());
-        }
-      });
-      window.netlifyIdentity.on('logout', () => location.reload());
-    }
-  </script>
-
   <!-- React 18（decap-cms-app 3.x UMD 把 React 作为外部 peer 依赖，需手动加载） -->
   <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
 
-  <!-- Decap CMS 3.x UMD：支持 locale 汉化，需手动 init -->
+  <!-- Decap CMS 3.x UMD：支持 locale 汉化 + GitHub OAuth implicit 直连，需手动 init -->
   <script src="https://unpkg.com/decap-cms-app@3.3.5/dist/decap-cms-app.js"></script>
   <script>
     // UMD 全局名因版本而异，兼容多种写法
