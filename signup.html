@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>激活账号 · 墨行简历后台</title>
+  <style>
+    body {
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f5f7;
+      color: #333;
+      text-align: center;
+      padding: 60px 20px;
+      margin: 0;
+    }
+    h2 { font-weight: 500; margin-bottom: 8px; }
+    p { color: #888; margin: 0; }
+    .logo { font-size: 22px; margin-bottom: 24px; color: #b8860b; }
+  </style>
+</head>
+<body>
+  <div class="logo">墨行 · 内容后台</div>
+  <h2>正在激活账号…</h2>
+  <p>请在此页面设置密码，完成后将自动跳转到后台。</p>
+
+  <!-- Netlify Identity widget：独立加载，无 Decap CMS hash 路由干扰，干净处理 invite/recovery token -->
+  <script src="https://unpkg.com/netlify-identity-widget@1.9.1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      // 已登录 → 直接进后台
+      netlifyIdentity.on('init', function (user) {
+        if (user) { window.location.href = '/admin/'; }
+      });
+      // 设完密码 / 登录成功 → 跳后台
+      netlifyIdentity.on('login', function () { window.location.href = '/admin/'; });
+      netlifyIdentity.on('logout', function () { window.location.href = '/admin/'; });
+      // 主动打开 widget，会自动识别 URL 里的 invite_token 弹"Complete your signup"
+      netlifyIdentity.open();
+    } else {
+      document.body.innerHTML += '<p style="color:#c00;margin-top:20px">Identity 组件加载失败，请刷新重试。</p>';
+    }
+  </script>
+</body>
+</html>
