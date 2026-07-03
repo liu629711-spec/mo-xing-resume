@@ -66,11 +66,12 @@
   <!-- 项目详情卷 overlay（动态填充） -->
   <div id="project-detail-overlay" aria-hidden="true" role="dialog" aria-modal="true"></div>
 
-  <!-- Netlify Identity：处理邀请/重置邮件 token，自动跳转到 /admin/ -->
+  <!-- Netlify Identity：处理邀请/重置邮件 token，自动跳转到 /admin/（去掉 Decap CMS hash 路由的 / 前缀） -->
   <script>
     (function () {
       if (location.hash && /token=/.test(location.hash) && location.pathname !== '/admin/') {
-        location.replace(location.origin + '/admin/' + location.hash);
+        var cleanHash = location.hash.replace(/^#\/?/, '#');
+        location.replace(location.origin + '/admin/' + cleanHash);
       }
     })();
   </script>
