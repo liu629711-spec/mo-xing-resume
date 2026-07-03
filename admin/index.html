@@ -6,11 +6,20 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- React 16（netlify-cms-app 2.x UMD 把 React 作为外部 peer 依赖，需手动加载；2.x 用 React16） -->
-  <script src="https://unpkg.com/react@16.14.0/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.production.min.js"></script>
+  <!-- Netlify Identity widget：git-gateway 登录需要它，site_id 指向 lxljianli.netlify.app -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', (user) => {
+        if (!user) {
+          window.netlifyIdentity.on('login', () => location.reload());
+        }
+      });
+      window.netlifyIdentity.on('logout', () => location.reload());
+    }
+  </script>
 
-  <!-- netlify-cms-app 2.15.72 UMD：支持 github implicit 直连（不走 Netlify 代理） -->
-  <script src="https://unpkg.com/netlify-cms-app@2.15.72/dist/netlify-cms-app.js"></script>
+  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init，配合 git-gateway 稳定可用 -->
+  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
 </body>
 </html>
