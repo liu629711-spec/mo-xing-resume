@@ -164,3 +164,34 @@ collections:
           - { label: 'LinkedIn', name: 'linkedin', widget: 'string', required: false }
           - { label: '脉脉', name: 'maimai', widget: 'string', required: false }
           - { label: '邀请语', name: 'invite', widget: 'text' }
+
+  - name: 'retro_boot_config'
+    label: '【复古】启动配置'
+    file: 'data/themes/retro/boot-config.json'
+    fields:
+      - { label: '页面标题', name: 'pageTitle', widget: 'string' }
+      - { label: 'LOGO 文字', name: 'logoText', widget: 'string' }
+      - { label: '主色', name: 'accentColor', widget: 'string', hint: 'hex 格式 #RRGGBB' }
+      - { label: '底色', name: 'bgColor', widget: 'string', hint: 'hex 格式 #RRGGBB' }
+      - { label: '加载文案', name: 'loadingText', widget: 'string' }
+      - label: '占位画面'
+        name: 'placeholder'
+        widget: 'object'
+        fields:
+          - { label: '标题', name: 'title', widget: 'string' }
+          - { label: '副标题', name: 'subtitle', widget: 'string' }
+          - { label: '返回按钮', name: 'returnLabel', widget: 'string' }
+      - label: '提示语'
+        name: 'hints'
+        widget: 'object'
+        fields:
+          - { label: '房间阶段', name: 'room', widget: 'string' }
+          - { label: '桌面阶段', name: 'desk', widget: 'string' }
+          - { label: '桌面阶段(移动端)', name: 'deskMobile', widget: 'string' }
+      - label: '时长(ms)'
+        name: 'durations'
+        widget: 'object'
+        fields:
+          - { label: '房间→书桌', name: 'roomToDesk', widget: 'number', value_type: 'int', min: 100, max: 10000 }
+          - { label: '屏幕启动序列', name: 'bootSeq', widget: 'number', value_type: 'int', min: 100, max: 10000 }
+          - { label: '穿越', name: 'dive', widget: 'number', value_type: 'int', min: 100, max: 10000 }
