@@ -119,3 +119,26 @@ export function validateRoomProps(props) {
   }
   return true;
 }
+
+const HEX_RE = /^#[0-9a-fA-F]{6}$/;
+
+export function validateBootConfig(c) {
+  if (!is.obj(c)) return false;
+  if (!is.str(c.logoText) || !c.logoText) return false;
+  if (!is.str(c.accentColor) || !HEX_RE.test(c.accentColor)) return false;
+  if (!is.str(c.bgColor) || !HEX_RE.test(c.bgColor)) return false;
+  if (!is.str(c.loadingText)) return false;
+  if ('pageTitle' in c && !is.str(c.pageTitle)) return false;
+  if (!is.obj(c.placeholder)) return false;
+  if (!is.str(c.placeholder.title) || !c.placeholder.title) return false;
+  if (!is.str(c.placeholder.subtitle)) return false;
+  if (!is.str(c.placeholder.returnLabel)) return false;
+  if (!is.obj(c.hints)) return false;
+  if (!is.str(c.hints.room) || !is.str(c.hints.desk) || !is.str(c.hints.deskMobile)) return false;
+  if (!is.obj(c.durations)) return false;
+  const d = c.durations;
+  if (!is.num(d.roomToDesk) || d.roomToDesk < 100 || d.roomToDesk > 10000) return false;
+  if (!is.num(d.bootSeq) || d.bootSeq < 100 || d.bootSeq > 10000) return false;
+  if (!is.num(d.dive) || d.dive < 100 || d.dive > 10000) return false;
+  return true;
+}

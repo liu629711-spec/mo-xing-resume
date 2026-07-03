@@ -1,0 +1,22 @@
+{
+  "pageTitle": "我的一生 · 复古电脑",
+  "logoText": "我的一生",
+  "accentColor": "#7DD3C0",
+  "bgColor": "#0a2a25",
+  "loadingText": "LOADING...",
+  "placeholder": {
+    "title": "世界生成中",
+    "subtitle": "记忆正在汇集成岛屿...",
+    "returnLabel": "返回房间"
+  },
+  "hints": {
+    "room": "点击任意位置继续...",
+    "desk": "按 Enter 启动...",
+    "deskMobile": "点击屏幕启动..."
+  },
+  "durations": {
+    "roomToDesk": 3000,
+    "bootSeq": 2000,
+    "dive": 1500
+  }
+}

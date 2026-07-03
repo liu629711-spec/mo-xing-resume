@@ -4,6 +4,7 @@ import {
   validateProfile, validateSkills, validateProjects,
   validateMetrics, validateGames, validateTimeline, validateContact,
   validateRoomProps,
+  validateBootConfig,
 } from './data-schema.js';
 import { filterDraft } from '../utils/draft.js';
 
@@ -16,6 +17,15 @@ const FALLBACK = {
   timeline: [],
   contact: { email: '', wechat: '', invite: '内容更新中' },
   roomProps: [],
+  bootConfig: {
+    logoText: '我的一生',
+    accentColor: '#7DD3C0',
+    bgColor: '#0a2a25',
+    loadingText: 'LOADING...',
+    placeholder: { title: '世界生成中', subtitle: '记忆正在汇集成岛屿...', returnLabel: '返回房间' },
+    hints: { room: '点击任意位置继续...', desk: '按 Enter 启动...', deskMobile: '点击屏幕启动...' },
+    durations: { roomToDesk: 3000, bootSeq: 2000, dive: 1500 },
+  },
 };
 
 function themeBase(themeId) {
@@ -91,7 +101,7 @@ export async function loadAllData(themeId = 'ink') {
   ];
 
   const results = themeId === 'retro'
-    ? await Promise.all([...baseLoaders, loadDir('room-props', validateRoomProps, themeId)])
+    ? await Promise.all([...baseLoaders, loadDir('room-props', validateRoomProps, themeId), load('boot-config', validateBootConfig, themeId)])
     : await Promise.all(baseLoaders);
 
   const [profile, skills, projects, metrics, games, timeline, contact] = results;
@@ -107,6 +117,7 @@ export async function loadAllData(themeId = 'ink') {
 
   if (themeId === 'retro') {
     payload.roomProps = results[7] || [];
+    payload.bootConfig = results[8] || FALLBACK.bootConfig;
   }
 
   return payload;
