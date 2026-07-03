@@ -1,0 +1,6 @@
+[build]
+  command = "node scripts/gen-index.mjs"
+  publish = "."
+
+# admin 后台需要 Identity + Git Gateway，在 Netlify 控制台手动开启
+# 详见 docs/部署配置指南.md
