@@ -1,0 +1,8 @@
+{
+  "category": "工具",
+  "items": [
+    { "name": "Axure", "level": 0.7, "story": "活动原型设计，与策划对齐需求" },
+    { "name": "Xmind", "level": 0.85, "story": "活动拆解与复盘思维导图" },
+    { "name": "Photoshop", "level": 0.6, "story": "基础素材处理与活动图修改" }
+  ]
+}

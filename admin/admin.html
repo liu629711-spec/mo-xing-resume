@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>墨行简历 · 内容后台</title>
+  <link rel="stylesheet" href="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.css" />
+</head>
+<body>
+  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', (user) => {
+        if (!user) {
+          window.netlifyIdentity.on('login', () => location.reload());
+        }
+      });
+    }
+  </script>
+</body>
+</html>
