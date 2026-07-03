@@ -6,10 +6,8 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- 用 esm.sh 加载 decap-cms-app，target=es2017 修复 immutable 导出，默认自动 polyfill Node 内置模块 -->
-  <script type="module">
-    import CMS from 'https://esm.sh/decap-cms-app@3.14.1?target=es2017';
-    CMS.init();
-  </script>
+  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init -->
+  <!-- 配合 config.yml 的 github implicit 直连 GitHub OAuth，不走 Netlify 代理 -->
+  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
 </body>
 </html>
