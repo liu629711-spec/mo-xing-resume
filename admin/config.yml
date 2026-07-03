@@ -1,9 +1,6 @@
 backend:
-  name: github
-  repo: liu629711-spec/mo-xing-resume
+  name: git-gateway
   branch: main
-  auth_type: implicit
-  app_id: Ov23lic4iws6LmHnlN5g
   commit_messages:
     create: 'cms: 新建 {{collection}} "{{slug}}"'
     update: 'cms: 更新 {{collection}} "{{slug}}"'
