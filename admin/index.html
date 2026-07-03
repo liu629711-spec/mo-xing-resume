@@ -6,20 +6,10 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- Netlify Identity widget：git-gateway 登录需要它，site_id 指向 lxljianli.netlify.app -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', (user) => {
-        if (!user) {
-          window.netlifyIdentity.on('login', () => location.reload());
-        }
-      });
-      window.netlifyIdentity.on('logout', () => location.reload());
-    }
+  <!-- 用 esm.sh 加载 decap-cms-app 的 ESM 构建，自动处理 React 依赖，避开 UMD 全局变量冲突 -->
+  <script type="module">
+    import CMS from 'https://esm.sh/decap-cms-app@3.14.1';
+    CMS.init();
   </script>
-
-  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init，配合 git-gateway 稳定可用 -->
-  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
 </body>
 </html>
