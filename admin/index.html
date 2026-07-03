@@ -6,8 +6,7 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init -->
-  <!-- 配合 config.yml 的 github implicit 直连 GitHub OAuth，不走 Netlify 代理 -->
-  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+  <!-- 本地构建的 decap-cms-app（Vite 打包，含 React + Node 内置模块 polyfill） -->
+  <script src="bundle/admin.js"></script>
 </body>
 </html>

@@ -7,3 +7,6 @@ Thumbs.db
 
 # 构建期生成的目录索引（由 scripts/gen-index.mjs 自动生成，不入库）
 data/*/index.json
+
+# Vite 构建的 admin bundle（CI 构建，不入库）
+admin/bundle/
