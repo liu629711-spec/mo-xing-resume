@@ -5,30 +5,30 @@ backend:
     create: 'cms: 新建 {{collection}} "{{slug}}"'
     update: 'cms: 更新 {{collection}} "{{slug}}"'
     delete: 'cms: 删除 {{collection}} "{{slug}}"'
-publish_mode: editorial_workflow
 locale: 'zh_Hans'
 media_folder: 'uploads'
 public_folder: 'uploads'
 site_url: https://liu629711-spec.github.io/mo-xing-resume
 
 collections:
-  - name: 'profile'
-    label: '关于 · 个人介绍'
+  # ── 水墨长卷 ──────────────────────────────────────────
+  - name: 'ink_profile'
+    label: '【水墨】关于 · 个人介绍'
     files:
       - name: 'profile'
         label: '关于'
-        file: 'data/profile.json'
+        file: 'data/themes/ink/profile.json'
         fields:
-          - { label: '页面标题', name: 'pageTitle', widget: 'string', hint: '浏览器标签页显示的标题，如：水墨长卷 · 游戏运营简历' }
+          - { label: '页面标题', name: 'pageTitle', widget: 'string', hint: '浏览器标签页显示的标题' }
           - { label: '姓名', name: 'name', widget: 'string' }
           - { label: '标语', name: 'tagline', widget: 'string' }
           - { label: '印章字', name: 'seal', widget: 'string' }
           - { label: '头像', name: 'avatar', widget: 'image', required: false }
           - { label: '自我介绍', name: 'summary', widget: 'list', field: { label: '一句话', name: 'text', widget: 'string' } }
 
-  - name: 'skills'
-    label: '技艺 · 技能矩阵'
-    folder: 'data/skills'
+  - name: 'ink_skills'
+    label: '【水墨】技艺 · 技能矩阵'
+    folder: 'data/themes/ink/skills'
     create: true
     delete: true
     extension: 'json'
@@ -45,9 +45,9 @@ collections:
           - { label: '技能故事', name: 'story', widget: 'text' }
       - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
 
-  - name: 'projects'
-    label: '项目 · 案例经历'
-    folder: 'data/projects'
+  - name: 'ink_projects'
+    label: '【水墨】项目 · 案例经历'
+    folder: 'data/themes/ink/projects'
     create: true
     delete: true
     extension: 'json'
@@ -70,12 +70,12 @@ collections:
       - { label: '关键动作', name: 'actions', widget: 'list', field: { label: '条目', name: 'text', widget: 'string' } }
       - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
 
-  - name: 'metrics'
-    label: '数据成河 · 数据看板'
+  - name: 'ink_metrics'
+    label: '【水墨】数据成河 · 数据看板'
     files:
       - name: 'metrics'
         label: '数据看板'
-        file: 'data/metrics.json'
+        file: 'data/themes/ink/metrics.json'
         fields:
           - label: '高亮指标'
             name: 'highlights'
@@ -106,9 +106,9 @@ collections:
               - { label: '活动', name: 'activity', widget: 'string' }
               - { label: 'ROI', name: 'roi', widget: 'number', value_type: 'float' }
 
-  - name: 'games'
-    label: '运营碑石 · 游戏作品'
-    folder: 'data/games'
+  - name: 'ink_games'
+    label: '【水墨】运营碑石 · 游戏作品'
+    folder: 'data/themes/ink/games'
     create: true
     delete: true
     extension: 'json'
@@ -121,7 +121,7 @@ collections:
       - { label: '角色', name: 'role', widget: 'string' }
       - { label: '封面图', name: 'cover', widget: 'image', required: false }
       - { label: '一句话亮点', name: 'note', widget: 'string' }
-      - { label: '演示视频链接', name: 'video', widget: 'string', required: false, hint: '支持 mp4/webm 直链、B 站视频页链接、YouTube 链接' }
+      - { label: '演示视频链接', name: 'video', widget: 'string', required: false }
       - { label: '详细描述(Markdown)', name: 'description', widget: 'markdown', required: false }
       - label: '关键数据指标'
         name: 'metrics'
@@ -134,9 +134,9 @@ collections:
       - { label: 'NDA 保密', name: 'nda', widget: 'boolean', default: false, required: false }
       - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
 
-  - name: 'timeline'
-    label: '时间轴 · 经历'
-    folder: 'data/timeline'
+  - name: 'ink_timeline'
+    label: '【水墨】时间轴 · 经历'
+    folder: 'data/themes/ink/timeline'
     create: true
     delete: true
     extension: 'json'
@@ -150,12 +150,12 @@ collections:
       - { label: '印章字', name: 'stamp', widget: 'string' }
       - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
 
-  - name: 'contact'
-    label: '联系 · 联系方式'
+  - name: 'ink_contact'
+    label: '【水墨】联系 · 联系方式'
     files:
       - name: 'contact'
         label: '联系方式'
-        file: 'data/contact.json'
+        file: 'data/themes/ink/contact.json'
         fields:
           - { label: '邮箱', name: 'email', widget: 'string' }
           - { label: '微信号', name: 'wechat', widget: 'string', required: false }
@@ -164,6 +164,181 @@ collections:
           - { label: 'LinkedIn', name: 'linkedin', widget: 'string', required: false }
           - { label: '脉脉', name: 'maimai', widget: 'string', required: false }
           - { label: '邀请语', name: 'invite', widget: 'text' }
+
+  # ── 复古电脑 ──────────────────────────────────────────
+  - name: 'retro_profile'
+    label: '【复古】关于 · 角色卡'
+    files:
+      - name: 'profile'
+        label: '关于'
+        file: 'data/themes/retro/profile.json'
+        fields:
+          - { label: '页面标题', name: 'pageTitle', widget: 'string' }
+          - { label: '姓名', name: 'name', widget: 'string' }
+          - { label: '标语', name: 'tagline', widget: 'string' }
+          - { label: '职业(className)', name: 'className', widget: 'string', required: false }
+          - { label: '等级', name: 'level', widget: 'number', required: false }
+          - { label: '标题屏文案', name: 'titleScreen', widget: 'string', required: false }
+          - { label: '自我介绍', name: 'summary', widget: 'list', field: { label: '一句话', name: 'text', widget: 'string' } }
+
+  - name: 'retro_contact'
+    label: '【复古】联系 · 组队招募'
+    files:
+      - name: 'contact'
+        label: '联系方式'
+        file: 'data/themes/retro/contact.json'
+        fields:
+          - { label: '邮箱', name: 'email', widget: 'string' }
+          - { label: '微信号', name: 'wechat', widget: 'string', required: false }
+          - { label: '邀请语', name: 'invite', widget: 'text' }
+
+  - name: 'retro_room_props'
+    label: '【复古】房间摆件'
+    folder: 'data/themes/retro/room-props'
+    create: true
+    delete: true
+    extension: 'json'
+    format: 'json'
+    slug: '{{gameName}}'
+    fields:
+      - { label: '游戏名', name: 'gameName', widget: 'string' }
+      - { label: '摆件名', name: 'propLabel', widget: 'string' }
+      - { label: '说明', name: 'tooltip', widget: 'string', required: false }
+      - { label: '位置', name: 'position', widget: 'select', options: ['desk', 'wall', 'shelf', 'floor'] }
+      - { label: '图片', name: 'image', widget: 'image', required: false }
+      - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
+
+  - name: 'retro_skills'
+    label: '【复古】技能树'
+    folder: 'data/themes/retro/skills'
+    create: true
+    delete: true
+    extension: 'json'
+    format: 'json'
+    slug: '{{category}}'
+    fields:
+      - { label: '分类', name: 'category', widget: 'string' }
+      - { label: '天赋系', name: 'branch', widget: 'select', options: ['growth', 'combat', 'craft'], required: false }
+      - { label: '技能点消耗', name: 'skillPointCost', widget: 'number', required: false }
+      - label: '技能项'
+        name: 'items'
+        widget: 'list'
+        fields:
+          - { label: '技能名', name: 'name', widget: 'string' }
+          - { label: '熟练度(0-1)', name: 'level', widget: 'number', value_type: 'float', min: 0, max: 1, step: 0.05 }
+          - { label: '技能故事', name: 'story', widget: 'text' }
+      - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
+
+  - name: 'retro_projects'
+    label: '【复古】副本挑战 · 项目'
+    folder: 'data/themes/retro/projects'
+    create: true
+    delete: true
+    extension: 'json'
+    format: 'json'
+    slug: '{{name}}'
+    fields:
+      - { label: '项目名', name: 'name', widget: 'string' }
+      - { label: '时间段', name: 'period', widget: 'string' }
+      - { label: '角色', name: 'role', widget: 'string' }
+      - { label: '副本名', name: 'dungeonName', widget: 'string', required: false }
+      - { label: 'BOSS名', name: 'bossName', widget: 'string', required: false }
+      - { label: '通关率(0-1)', name: 'clearRate', widget: 'number', value_type: 'float', min: 0, max: 1, step: 0.05, required: false }
+      - label: '指标'
+        name: 'metrics'
+        widget: 'object'
+        fields:
+          - { label: 'DAU', name: 'dau', widget: 'string', required: false }
+          - { label: '留存', name: 'retention', widget: 'string', required: false }
+          - { label: '营收', name: 'revenue', widget: 'string', required: false }
+      - { label: '职责', name: 'duties', widget: 'list', field: { label: '条目', name: 'text', widget: 'string' } }
+      - { label: '关键动作', name: 'actions', widget: 'list', field: { label: '条目', name: 'text', widget: 'string' } }
+      - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
+
+  - name: 'retro_metrics'
+    label: '【复古】成就殿堂 · 数据'
+    files:
+      - name: 'metrics'
+        label: '成就殿堂'
+        file: 'data/themes/retro/metrics.json'
+        fields:
+          - label: '高亮成就'
+            name: 'highlights'
+            widget: 'list'
+            fields:
+              - { label: '标签', name: 'label', widget: 'string' }
+              - { label: '数值', name: 'value', widget: 'string' }
+              - { label: '单位', name: 'unit', widget: 'string', required: false }
+              - { label: '成就ID', name: 'achievementId', widget: 'string', required: false }
+              - { label: '稀有度', name: 'rarity', widget: 'select', options: ['common', 'rare', 'epic', 'legendary'], required: false }
+          - label: 'DAU 曲线'
+            name: 'dauCurve'
+            widget: 'list'
+            required: false
+            fields:
+              - { label: '月份', name: 'month', widget: 'string' }
+              - { label: 'DAU', name: 'dau', widget: 'number' }
+          - label: '用户来源'
+            name: 'userSources'
+            widget: 'list'
+            required: false
+            fields:
+              - { label: '标签', name: 'label', widget: 'string' }
+              - { label: '占比', name: 'value', widget: 'number' }
+          - label: 'ROI 柱状图'
+            name: 'roiBars'
+            widget: 'list'
+            required: false
+            fields:
+              - { label: '活动', name: 'activity', widget: 'string' }
+              - { label: 'ROI', name: 'roi', widget: 'number', value_type: 'float' }
+
+  - name: 'retro_games'
+    label: '【复古】游戏库 · 卡带'
+    folder: 'data/themes/retro/games'
+    create: true
+    delete: true
+    extension: 'json'
+    format: 'json'
+    slug: '{{name}}'
+    fields:
+      - { label: '游戏名', name: 'name', widget: 'string' }
+      - { label: '类型', name: 'type', widget: 'string' }
+      - { label: '时间段', name: 'period', widget: 'string' }
+      - { label: '角色', name: 'role', widget: 'string' }
+      - { label: '封面图', name: 'cover', widget: 'image', required: false }
+      - { label: '一句话亮点', name: 'note', widget: 'string' }
+      - { label: '平台', name: 'platform', widget: 'string', required: false }
+      - { label: '卡带色', name: 'cartridgeColor', widget: 'string', required: false }
+      - { label: '演示视频链接', name: 'video', widget: 'string', required: false }
+      - { label: '详细描述(Markdown)', name: 'description', widget: 'markdown', required: false }
+      - label: '关键数据指标'
+        name: 'metrics'
+        widget: 'list'
+        required: false
+        fields:
+          - { label: '标签', name: 'label', widget: 'string' }
+          - { label: '数值', name: 'value', widget: 'string' }
+          - { label: '单位', name: 'unit', widget: 'string', required: false }
+      - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
+
+  - name: 'retro_timeline'
+    label: '【复古】冒险历程 · 时间轴'
+    folder: 'data/themes/retro/timeline'
+    create: true
+    delete: true
+    extension: 'json'
+    format: 'json'
+    slug: '{{year}}-{{title}}'
+    fields:
+      - { label: '时间', name: 'year', widget: 'string' }
+      - { label: '标题', name: 'title', widget: 'string' }
+      - { label: '组织', name: 'org', widget: 'string' }
+      - { label: '描述', name: 'desc', widget: 'text' }
+      - { label: '章节标题', name: 'chapterTitle', widget: 'string', required: false }
+      - { label: '对话', name: 'dialogue', widget: 'text', required: false }
+      - { label: '印章字', name: 'stamp', widget: 'string', required: false }
+      - { label: '草稿(隐藏)', name: 'draft', widget: 'boolean', default: false, required: false }
 
   - name: 'retro_boot_config'
     label: '【复古】启动配置'

@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600;900&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/core.css" />
+  <link rel="stylesheet" href="css/core/theme-switcher.css" />
   <link rel="stylesheet" href="css/ink.css" />
   <link rel="stylesheet" href="css/sections.css" />
   <link rel="stylesheet" href="css/responsive.css" />
@@ -47,7 +48,8 @@
     <canvas id="ink-ripple-canvas"></canvas>
   </div>
 
-  <!-- 四季切换器 + 飞行模式开关 -->
+  <!-- 主题切换 + 四季切换器 + 飞行模式开关 -->
+  <nav id="theme-switcher" aria-label="风格切换"></nav>
   <nav id="season-switcher" aria-label="季节与视角切换">
     <button id="free-view-toggle" type="button" title="自由飞行视角" aria-label="开启自由飞行视角">游</button>
     <span class="switcher-divider" aria-hidden="true"></span>
@@ -76,5 +78,7 @@
 
   <!-- 应用脚本：ES Module 入口 -->
   <script type="module" src="js/core/init.js"></script>
+
+  <footer id="site-disclaimer" class="site-disclaimer"></footer>
 </body>
 </html>
