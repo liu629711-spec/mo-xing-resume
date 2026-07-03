@@ -6,7 +6,19 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- 本地构建的 decap-cms-app（Vite 打包，含 React + Node 内置模块 polyfill） -->
-  <script src="bundle/admin.js"></script>
+  <!-- Netlify Identity：git-gateway 登录（须在 lxljianli.netlify.app 域名下使用） -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', (user) => {
+        if (!user) {
+          window.netlifyIdentity.on('login', () => location.reload());
+        }
+      });
+      window.netlifyIdentity.on('logout', () => location.reload());
+    }
+  </script>
+  <!-- netlify-cms 2.10.192：自带 React，加载即 init，配合 git-gateway 稳定 -->
+  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
 </body>
 </html>

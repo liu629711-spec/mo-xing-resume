@@ -1,10 +1,6 @@
 backend:
-  name: github
-  repo: liu629711-spec/mo-xing-resume
+  name: git-gateway
   branch: main
-  # GitHub backend 必须走 OAuth proxy；使用 Vercel（国内比 workers.dev 更易访问）
-  base_url: https://mo-xing-resume-pq4n.vercel.app
-  auth_endpoint: auth
   commit_messages:
     create: 'cms: 新建 {{collection}} "{{slug}}"'
     update: 'cms: 更新 {{collection}} "{{slug}}"'
