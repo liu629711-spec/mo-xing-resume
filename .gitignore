@@ -7,6 +7,14 @@ Thumbs.db
 
 # 构建期生成的目录索引（由 scripts/gen-index.mjs 自动生成，不入库）
 data/*/index.json
+data/themes/*/skills/index.json
+data/themes/*/projects/index.json
+data/themes/*/games/index.json
+data/themes/*/timeline/index.json
+data/themes/*/room-props/index.json
 
 # Vite 构建的 admin bundle（CI 构建，不入库）
 admin/bundle/
+
+# Git worktree 隔离开发目录
+.worktrees/
