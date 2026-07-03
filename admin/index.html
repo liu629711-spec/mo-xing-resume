@@ -7,7 +7,19 @@
   <link rel="stylesheet" href="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.css" />
 </head>
 <body>
-  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+  <!-- 在加载 CMS 前，先规范化 hash：去掉 Decap CMS hash 路由的 / 前缀，
+       让 Netlify Identity widget 能识别 invite_token / recovery_token -->
+  <script>
+    (function () {
+      if (location.hash && /^#\/.*(token=)/.test(location.hash)) {
+        var clean = location.hash.replace(/^#\/?/, '#');
+        history.replaceState(null, '', location.pathname + clean);
+      }
+    })();
+  </script>
+
+  <!-- 显式加载 Netlify Identity widget，让它主动处理邀请/重置 token -->
+  <script src="https://unpkg.com/netlify-identity-widget@1.9.1/netlify-identity-widget.js"></script>
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on('init', (user) => {
@@ -15,7 +27,11 @@
           window.netlifyIdentity.on('login', () => location.reload());
         }
       });
+      window.netlifyIdentity.on('logout', () => location.reload());
     }
   </script>
+
+  <!-- 最后加载 Decap CMS -->
+  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
 </body>
 </html>
