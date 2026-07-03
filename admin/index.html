@@ -4,11 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>墨行简历 · 内容后台</title>
-  <link rel="stylesheet" href="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.css" />
+  <link rel="stylesheet" href="https://unpkg.com/decap-cms@3.5.1/dist/decap-cms.css" />
 </head>
 <body>
-  <!-- 在加载 CMS 前，先规范化 hash：去掉 Decap CMS hash 路由的 / 前缀，
-       让 Netlify Identity widget 能识别 invite_token / recovery_token -->
+  <!-- 规范化 hash：去掉 Decap CMS hash 路由的 / 前缀，让 Identity widget 识别 token -->
   <script>
     (function () {
       if (location.hash && /^#\/.*(token=)/.test(location.hash)) {
@@ -18,7 +17,7 @@
     })();
   </script>
 
-  <!-- 显式加载 Netlify Identity widget，让它主动处理邀请/重置 token -->
+  <!-- Netlify Identity widget（处理邀请/重置 token） -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
     if (window.netlifyIdentity) {
@@ -31,7 +30,7 @@
     }
   </script>
 
-  <!-- 最后加载 Decap CMS -->
-  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+  <!-- Decap CMS 3.x（支持 GitHub OAuth implicit 直连，不走 Netlify 代理） -->
+  <script src="https://unpkg.com/decap-cms@3.5.1/dist/decap-cms.js"></script>
 </body>
 </html>
