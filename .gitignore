@@ -18,3 +18,6 @@ admin/bundle/
 
 # Git worktree 隔离开发目录
 .worktrees/
+
+# samsy-ninja 3D 资产（二进制，体积大，不入库，本地 iframe 加载）
+samsy/
