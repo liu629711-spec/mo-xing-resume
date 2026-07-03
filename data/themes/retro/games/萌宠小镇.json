@@ -1,0 +1,16 @@
+{
+  "name": "萌宠小镇",
+  "type": "休闲",
+  "period": "2021.03 - 2022.06",
+  "role": "运营专员",
+  "cover": "",
+  "note": "入行第一站，节日活动 DAU +40%。",
+  "video": "",
+  "description": "## 亮点\n\n- 策划节日活动，DAU 提升 40%\n- 搭建社群体系，沉淀核心用户",
+  "metrics": [
+    { "label": "DAU", "value": "+40%", "unit": "" }
+  ],
+  "platform": "Mobile · 休闲",
+  "cartridgeColor": "#a84",
+  "draft": false
+}

@@ -1,0 +1,27 @@
+{
+  "highlights": [
+    { "label": "累计运营用户", "value": "1200", "unit": "万+" },
+    { "label": "主导活动场次", "value": "80", "unit": "+" },
+    { "label": "累计流水", "value": "3.2", "unit": "亿" }
+  ],
+  "dauCurve": [
+    { "month": "2024-01", "dau": 80 },
+    { "month": "2024-03", "dau": 95 },
+    { "month": "2024-05", "dau": 110 },
+    { "month": "2024-07", "dau": 130 },
+    { "month": "2024-09", "dau": 150 },
+    { "month": "2024-11", "dau": 175 }
+  ],
+  "userSources": [
+    { "label": "自然新增", "value": 38 },
+    { "label": "活动裂变", "value": 28 },
+    { "label": "买量投放", "value": 20 },
+    { "label": "召回", "value": 14 }
+  ],
+  "roiBars": [
+    { "activity": "春节活动", "roi": 3.4 },
+    { "activity": "周年庆", "roi": 3.8 },
+    { "activity": "联动活动", "roi": 2.9 },
+    { "activity": "暑期活动", "roi": 3.1 }
+  ]
+}

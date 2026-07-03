@@ -1,0 +1,9 @@
+{
+  "category": "活动策划",
+  "branch": "combat",
+  "skillPointCost": 4,
+  "items": [
+    { "name": "大促策划", "level": 0.85, "story": "主导春节/周年庆大促，单活动流水破千万" },
+    { "name": "联动策划", "level": 0.72, "story": "IP 联动带来 30 万新增" }
+  ]
+}

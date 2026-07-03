@@ -1,0 +1,9 @@
+{
+  "category": "用户增长",
+  "branch": "growth",
+  "skillPointCost": 3,
+  "items": [
+    { "name": "裂变拉新", "level": 0.7, "story": "活动裂变贡献 28% 新增" },
+    { "name": "召回策略", "level": 0.68, "story": "分层召回，沉默用户回流率 +18%" }
+  ]
+}

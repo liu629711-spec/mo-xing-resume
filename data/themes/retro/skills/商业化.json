@@ -1,0 +1,9 @@
+{
+  "category": "商业化",
+  "branch": "growth",
+  "skillPointCost": 3,
+  "items": [
+    { "name": "付费设计", "level": 0.75, "story": "设计月卡/通行证/礼包体系，ARPU 提升 22%" },
+    { "name": "ROI 优化", "level": 0.7, "story": "活动 ROI 从 2.1 提升到 3.4" }
+  ]
+}

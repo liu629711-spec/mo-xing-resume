@@ -1,0 +1,19 @@
+{
+  "name": "萌宠小镇",
+  "period": "2021.03 - 2022.06",
+  "role": "运营专员",
+  "metrics": { "dau": "+40%", "retention": "+3pp", "revenue": "+12%" },
+  "duties": [
+    "日常活动配置与数据监控",
+    "社群运营与用户反馈收集"
+  ],
+  "actions": [
+    "策划节日活动，DAU 提升 40%",
+    "搭建社群体系，沉淀核心用户"
+  ],
+  "image": "",
+  "impact": 0.6,
+  "dungeonName": "萌宠平原",
+  "bossName": "新手村长",
+  "clearRate": 0.6
+}

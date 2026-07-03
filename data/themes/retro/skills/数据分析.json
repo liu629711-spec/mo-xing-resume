@@ -1,0 +1,9 @@
+{
+  "category": "数据分析",
+  "branch": "growth",
+  "skillPointCost": 3,
+  "items": [
+    { "name": "漏斗分析", "level": 0.78, "story": "拆解新手引导漏斗，定位流失节点" },
+    { "name": "A/B 测试", "level": 0.7, "story": "设计实验验证活动方案效果" }
+  ]
+}

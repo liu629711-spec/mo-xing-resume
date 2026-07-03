@@ -1,0 +1,7 @@
+{
+  "default": "ink",
+  "themes": [
+    { "id": "ink", "label": "水墨长卷", "bootSkippable": true },
+    { "id": "retro", "label": "复古电脑", "bootSkippable": true }
+  ]
+}

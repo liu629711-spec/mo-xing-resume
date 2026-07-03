@@ -1,0 +1,9 @@
+{
+  "category": "工具",
+  "branch": "craft",
+  "skillPointCost": 2,
+  "items": [
+    { "name": "数据看板", "level": 0.8, "story": "搭建 BI 看板，监控核心指标" },
+    { "name": "SQL", "level": 0.65, "story": "自助取数，不依赖数据同学" }
+  ]
+}

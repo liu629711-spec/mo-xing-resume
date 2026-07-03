@@ -1,0 +1,17 @@
+{
+  "name": "星海征途",
+  "type": "SLG",
+  "period": "2022.06 - 2024.01",
+  "role": "高级运营",
+  "cover": "",
+  "note": "优化新手体验，DAU 提升 60%。",
+  "video": "",
+  "description": "## 亮点\n\n- 优化新手引导，次日留存 +5pp\n- 策划暑期活动，DAU 提升 60%",
+  "metrics": [
+    { "label": "DAU", "value": "+60%", "unit": "" },
+    { "label": "留存", "value": "+5", "unit": "pp" }
+  ],
+  "platform": "Mobile · SLG",
+  "cartridgeColor": "#48a",
+  "draft": false
+}

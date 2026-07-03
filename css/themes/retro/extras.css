@@ -1,0 +1,202 @@
+/* P3 加分项：状态栏、结算、屏保、彩蛋卡片 */
+
+.retro-status-bar {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 75;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #8f8;
+  background: rgba(0, 15, 0, 0.7);
+  border: 1px solid rgba(0, 255, 128, 0.3);
+  border-radius: 2px;
+  pointer-events: auto;
+}
+
+.retro-status-bar__explore {
+  text-shadow: 0 0 6px rgba(0, 255, 128, 0.4);
+}
+
+.retro-status-bar__sound {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  font-size: 0.9rem;
+  color: #8f8;
+  background: transparent;
+  border: 1px solid rgba(0, 255, 128, 0.3);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.retro-status-bar__sound.is-on {
+  background: rgba(0, 255, 128, 0.15);
+  text-shadow: 0 0 8px #0f8;
+}
+
+/* 通关结算 */
+.retro-ending {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  font-family: 'Courier New', monospace;
+}
+
+.retro-ending__card {
+  position: relative;
+  padding: 2rem 3rem;
+  text-align: center;
+  background: #000;
+  color: #ff0;
+  border: 4px solid #ff0;
+  box-shadow: 0 0 40px rgba(255, 255, 0, 0.3);
+}
+
+.retro-ending__rank {
+  font-size: 4rem;
+  color: #ff0;
+  line-height: 1;
+  text-shadow: 0 0 20px #ff0;
+  margin-bottom: 0.5rem;
+}
+
+.retro-ending__title {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  letter-spacing: 0.2em;
+}
+
+.retro-ending__name {
+  font-size: 1.2rem;
+  color: #8cf;
+  margin-bottom: 0.5rem;
+}
+
+.retro-ending__line {
+  font-size: 0.9rem;
+  color: #8f8;
+  margin-bottom: 1rem;
+}
+
+.retro-ending__invite {
+  font-size: 0.85rem;
+  color: #ccc;
+  margin-bottom: 1.5rem;
+  max-width: 320px;
+}
+
+.retro-ending__actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* 屏保 */
+.retro-screensaver {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: #000;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.retro-screensaver__float {
+  position: absolute;
+  top: 40%;
+  left: 10%;
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  color: #2a6a2a;
+  text-shadow: 0 0 12px rgba(0, 255, 128, 0.3);
+  animation: retro-screensaver-drift 12s linear infinite;
+}
+
+.retro-screensaver__float--2 {
+  top: 60%;
+  left: 60%;
+  font-size: 1.1rem;
+  color: #1a4a1a;
+  animation-duration: 16s;
+  animation-direction: reverse;
+}
+
+@keyframes retro-screensaver-drift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(40vw, -10vh); }
+  50% { transform: translate(60vw, 15vh); }
+  75% { transform: translate(20vw, 30vh); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 摆件彩蛋卡片 */
+.retro-easter {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  font-family: 'Courier New', monospace;
+}
+
+.retro-easter__card {
+  position: relative;
+  width: 300px;
+  padding: 1.5rem;
+  background: #1a1a2a;
+  border: 3px solid #6f6;
+  box-shadow: 0 0 30px rgba(0, 255, 128, 0.25);
+  color: #fff;
+}
+
+.retro-easter__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid #6f6;
+  color: #6f6;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.retro-easter__game {
+  font-size: 1.3rem;
+  color: #ff0;
+  margin-bottom: 0.5rem;
+}
+
+.retro-easter__prop {
+  font-size: 1rem;
+  color: #8cf;
+  margin-bottom: 0.75rem;
+}
+
+.retro-easter__tip {
+  font-size: 0.85rem;
+  color: #cfc;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.retro-easter__hint {
+  font-size: 0.7rem;
+  color: #888;
+  border-top: 1px dashed #444;
+  padding-top: 0.5rem;
+}
