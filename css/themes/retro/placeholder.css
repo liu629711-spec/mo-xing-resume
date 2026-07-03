@@ -1,0 +1,8 @@
+.retro-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; background: #0a2a25; color: #7DD3C0; font-family: 'VT323', monospace; z-index: 35; }
+.retro-placeholder[hidden] { display: none; }
+.retro-placeholder__title { font-size: 2.5rem; letter-spacing: 0.1em; }
+.retro-placeholder__bar { width: 18rem; height: 0.8rem; border: 1px solid #7DD3C0; background: rgba(125,211,192,0.15); overflow: hidden; }
+.retro-placeholder__bar-fill { height: 100%; width: 0%; background: #7DD3C0; transition: width 0.3s linear; }
+.retro-placeholder__subtitle { font-size: 1.1rem; opacity: 0.8; }
+.retro-placeholder__return { margin-top: 1rem; padding: 0.5rem 1.2rem; background: transparent; color: #7DD3C0; border: 1px solid #7DD3C0; font-family: inherit; font-size: 1.1rem; cursor: pointer; }
+.retro-placeholder__return:hover { background: rgba(125,211,192,0.2); }
