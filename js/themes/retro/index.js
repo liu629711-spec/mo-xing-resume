@@ -4,6 +4,13 @@ export const id = 'retro';
 
 let root = null;
 let sceneCtx = null;
+let bootSequence = null;
+let lights = null;
+let props = null;
+let monitor = null;
+let hint = null;
+let placeholder = null;
+let flash = null;
 
 export async function init(ctx) {
   hideInkShell();
@@ -30,6 +37,8 @@ export async function boot(ctx) {
   const loading = root?.querySelector('#retro-loading');
   if (!canvas) return;
 
+  const cfg = ctx.data.bootConfig || {};
+
   try {
     const { createRoomScene } = await import('./room/room-scene.js');
     sceneCtx = createRoomScene(canvas, { isMobile: state.isMobile });
@@ -41,7 +50,7 @@ export async function boot(ctx) {
   }
 
   const { addRoomLights } = await import('./room/room-lights.js');
-  addRoomLights(sceneCtx.scene);
+  lights = addRoomLights(sceneCtx.scene);
 
   try {
     const { buildFallbackRoom } = await import('./room/room-fallback.js');
@@ -52,23 +61,51 @@ export async function boot(ctx) {
 
   try {
     const { loadRoomProps } = await import('./room/room-props.js');
-    loadRoomProps(sceneCtx.scene, ctx.data.roomProps || [], { onPropClick: () => {} });
+    props = loadRoomProps(sceneCtx.scene, ctx.data.roomProps || [], { onPropClick: () => {} });
   } catch (e) {
     console.warn('[retro] 摆件加载失败', e);
   }
 
+  let logoTexture = null;
+  try {
+    const { createLogoTexture } = await import('./monitor/logo-texture.js');
+    logoTexture = await createLogoTexture(cfg.logoText || '我的一生', {
+      accent: cfg.accentColor, bg: cfg.bgColor,
+    });
+  } catch (e) {
+    console.warn('[retro] LOGO 纹理生成失败', e);
+  }
+  try {
+    const { createMonitorScreen } = await import('./monitor/monitor-screen.js');
+    monitor = createMonitorScreen(sceneCtx.scene, cfg, logoTexture);
+  } catch (e) {
+    console.warn('[retro] 屏幕创建失败', e);
+  }
+
+  const { createHintOverlay } = await import('./ui/hint-overlay.js');
+  hint = createHintOverlay(root, cfg);
+
+  const { createWhiteFlash } = await import('./transitions/white-flash.js');
+  flash = createWhiteFlash(root);
+
+  const { createPlaceholder } = await import('./ui/placeholder-screen.js');
+  placeholder = createPlaceholder(root, cfg, { onReturn: () => bootSequence?.resetToRoom?.() });
+
   if (loading) loading.style.display = 'none';
 
-  // 临时渲染循环（任务 16 会替换为完整编排 + state machine）
-  const renderLoop = () => {
-    sceneCtx.render();
-    sceneCtx.rafId = requestAnimationFrame(renderLoop);
-  };
-  renderLoop();
+  const { playBootSequence } = await import('./boot.js');
+  bootSequence = playBootSequence({ ctx, root, sceneCtx, monitor, hint, placeholder, flash, cfg, state });
 }
 
 export async function destroy() {
-  if (sceneCtx?.rafId) cancelAnimationFrame(sceneCtx.rafId);
+  bootSequence?.dispose?.();
+  bootSequence = null;
+  flash?.dispose?.();
+  placeholder?.dispose?.();
+  hint?.dispose?.();
+  monitor?.dispose?.();
+  props?.dispose?.();
+  lights?.dispose?.();
   sceneCtx?.dispose?.();
   sceneCtx = null;
   root?.remove();
