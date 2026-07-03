@@ -26,7 +26,8 @@ jobs:
           cache: 'npm'
 
       # 安装依赖并构建 admin（Vite 打包 decap-cms-app + Node 内置模块 polyfill）
-      - run: npm ci
+      # 用 npm install 而非 npm ci，因为仓库未提交 package-lock.json
+      - run: npm install --no-audit --no-fund --legacy-peer-deps
       - run: npm run build:admin
 
       # 构建期生成 data/<name>/index.json 文件列表
