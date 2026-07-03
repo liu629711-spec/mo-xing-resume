@@ -29,7 +29,20 @@
     }
   </script>
 
-  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init -->
-  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+  <!-- React 18（decap-cms-app 3.x UMD 把 React 作为外部 peer 依赖，需手动加载） -->
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+
+  <!-- Decap CMS 3.x UMD：支持 locale 汉化，需手动 init -->
+  <script src="https://unpkg.com/decap-cms-app@3.3.5/dist/decap-cms-app.js"></script>
+  <script>
+    // UMD 全局名因版本而异，兼容多种写法
+    (function () {
+      var CMS = window.DecapCmsApp || window.decapCMS || window.CMS;
+      if (CMS && typeof CMS.init === 'function') {
+        CMS.init();
+      }
+    })();
+  </script>
 </body>
 </html>
