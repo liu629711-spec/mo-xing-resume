@@ -16,7 +16,7 @@
     })();
   </script>
 
-  <!-- Netlify Identity widget（处理邀请/重置 token） -->
+  <!-- Netlify Identity widget（处理邀请/重置 token；GitHub OAuth 登录走 CMS 自带流程） -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
     if (window.netlifyIdentity) {
@@ -29,7 +29,17 @@
     }
   </script>
 
+  <!-- React 18（decap-cms-app 3.x UMD 不再自带 React，必须手动加载） -->
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+
   <!-- Decap CMS 3.x（支持 GitHub OAuth implicit 直连，不走 Netlify 代理） -->
-  <script src="https://unpkg.com/decap-cms-app@3.14.1/dist/decap-cms-app.js"></script>
+  <script src="https://unpkg.com/decap-cms-app@3.3.5/dist/decap-cms-app.js"></script>
+  <script>
+    // UMD 模式下需手动初始化 CMS
+    if (window.DecapCmsApp) {
+      window.DecapCmsApp.init();
+    }
+  </script>
 </body>
 </html>
