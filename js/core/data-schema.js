@@ -103,3 +103,19 @@ export function validateContact(c) {
   if (!is.str(c.invite)) return false;
   return true;
 }
+
+const ROOM_POSITIONS = new Set(['desk', 'wall', 'shelf', 'floor']);
+
+export function validateRoomProps(props) {
+  if (!is.arr(props)) return false;
+  for (const p of props) {
+    if (!is.obj(p)) return false;
+    if (!is.str(p.gameName) || !p.gameName) return false;
+    if (!is.str(p.propLabel) || !p.propLabel) return false;
+    if (!is.str(p.position) || !ROOM_POSITIONS.has(p.position)) return false;
+    if ('tooltip' in p && !is.str(p.tooltip)) return false;
+    if ('image' in p && !is.str(p.image)) return false;
+    if ('draft' in p && typeof p.draft !== 'boolean') return false;
+  }
+  return true;
+}
