@@ -29,11 +29,7 @@
     }
   </script>
 
-  <!-- React 16（netlify-cms-app 2.x UMD 把 React 作为外部 peer 依赖，需手动加载；2.x 用 React 16 不是 18） -->
-  <script src="https://unpkg.com/react@16.14.0/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.production.min.js"></script>
-
-  <!-- netlify-cms-app 2.x UMD：读到 window.React 后加载即自动 init -->
-  <script src="https://unpkg.com/netlify-cms-app@2.15.72/dist/netlify-cms-app.js"></script>
+  <!-- netlify-cms 2.10.192 完整 UMD：自带 React16 + CSS，加载即自动 init -->
+  <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
 </body>
 </html>
