@@ -6,9 +6,9 @@
   <title>墨行简历 · 内容后台</title>
 </head>
 <body>
-  <!-- 用 esm.sh 加载 decap-cms-app 的 ESM 构建，自动处理 React 依赖，避开 UMD 全局变量冲突 -->
+  <!-- 用 esm.sh bundle-deps 加载 decap-cms-app，把所有依赖打包成一个文件，避开 immutable 等CJS库的命名导出转换问题 -->
   <script type="module">
-    import CMS from 'https://esm.sh/decap-cms-app@3.14.1';
+    import CMS from 'https://esm.sh/decap-cms-app@3.14.1?bundle-deps&target=es2017';
     CMS.init();
   </script>
 </body>
