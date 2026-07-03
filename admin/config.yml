@@ -6,6 +6,7 @@ backend:
     update: 'cms: 更新 {{collection}} "{{slug}}"'
     delete: 'cms: 删除 {{collection}} "{{slug}}"'
 publish_mode: editorial_workflow
+locale: 'zh_Hans'
 media_folder: 'uploads'
 public_folder: '/uploads'
 site_url: /
