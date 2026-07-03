@@ -3,6 +3,7 @@ import {
   validateProfile, validateSkills, validateProjects,
   validateMetrics, validateGames, validateTimeline, validateContact,
 } from './data-schema.js';
+import { filterDraft } from '../utils/draft.js';
 
 const FALLBACK = {
   profile: { name: '墨行', tagline: '游戏产品运营', summary: ['内容更新中'], seal: '墨' },
@@ -40,5 +41,13 @@ export async function loadAllData() {
     load('timeline', validateTimeline),
     load('contact', validateContact),
   ]);
-  return { profile, skills, projects, metrics, games, timeline, contact };
+  return {
+    profile,
+    skills: filterDraft(skills),
+    projects: filterDraft(projects),
+    metrics,
+    games: filterDraft(games),
+    timeline: filterDraft(timeline),
+    contact,
+  };
 }

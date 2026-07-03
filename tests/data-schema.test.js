@@ -62,3 +62,38 @@ describe('contact schema', () => {
   it('合法数据通过', () => expect(validateContact(goodContact)).toBe(true));
   it('缺 email 失败', () => expect(validateContact({ wechat: 'x' })).toBe(false));
 });
+
+describe('games schema 扩展字段', () => {
+  const base = { name: 'g', type: 'RPG', period: '2024', role: 'r', cover: '', note: 'n' };
+
+  it('带 video/description/metrics/draft 可选字段通过', () => {
+    const g = {
+      ...base,
+      video: 'https://oss.x.com/a.mp4',
+      description: '## 亮点\n运营心得...',
+      metrics: [{ label: 'DAU', value: '+120%', unit: '' }],
+      draft: false,
+    };
+    expect(validateGames([g])).toBe(true);
+  });
+
+  it('只有基础字段仍通过（向后兼容）', () => {
+    expect(validateGames([base])).toBe(true);
+  });
+
+  it('video 非字符串失败', () => {
+    expect(validateGames([{ ...base, video: 123 }])).toBe(false);
+  });
+
+  it('description 非字符串失败', () => {
+    expect(validateGames([{ ...base, description: [] }])).toBe(false);
+  });
+
+  it('metrics 非数组失败', () => {
+    expect(validateGames([{ ...base, metrics: 'x' }])).toBe(false);
+  });
+
+  it('draft 非布尔失败', () => {
+    expect(validateGames([{ ...base, draft: 'yes' }])).toBe(false);
+  });
+});

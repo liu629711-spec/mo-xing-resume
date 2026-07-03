@@ -72,6 +72,12 @@ export function validateGames(g) {
     if (!is.str(game.role)) return false;
     if (!is.str(game.cover)) return false;
     if (!is.str(game.note)) return false;
+    // 可选扩展字段（视频/富文本/指标/草稿/NDA）
+    if ('video' in game && !is.str(game.video)) return false;
+    if ('description' in game && !is.str(game.description)) return false;
+    if ('metrics' in game && !is.arr(game.metrics)) return false;
+    if ('draft' in game && typeof game.draft !== 'boolean') return false;
+    if ('nda' in game && typeof game.nda !== 'boolean') return false;
   }
   return true;
 }
