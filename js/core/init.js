@@ -99,6 +99,10 @@ async function main() {
   // 3. 加载数据
   const data = await loadAllData();
 
+  if (data.profile.pageTitle) {
+    document.title = data.profile.pageTitle;
+  }
+
   // 4. 渲染各板块内容
   renderAbout(document.getElementById('sec-about'), data.profile);
   renderSkills(document.getElementById('sec-skills'), data.skills);

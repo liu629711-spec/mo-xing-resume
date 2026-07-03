@@ -26,6 +26,9 @@ describe('profile schema', () => {
   it('summary 不是数组失败', () => {
     expect(validateProfile({ name: 'a', tagline: 'b', summary: 'c', seal: 'd' })).toBe(false);
   });
+  it('pageTitle 可选，非字符串失败', () => {
+    expect(validateProfile({ ...goodProfile, pageTitle: 123 })).toBe(false);
+  });
 });
 
 describe('skills schema', () => {

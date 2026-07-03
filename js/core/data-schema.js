@@ -13,6 +13,7 @@ export function validateProfile(p) {
   if (!is.str(p.tagline)) return false;
   if (!is.arr(p.summary)) return false;
   if (!is.str(p.seal)) return false;
+  if ('pageTitle' in p && !is.str(p.pageTitle)) return false;
   return true;
 }
 
