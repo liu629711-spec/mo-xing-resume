@@ -1,4 +1,6 @@
 // 板块 5：碑林 · 游戏作品墙
+import { resolveVideo } from '../utils/video.js';
+
 export function renderGames(el, games) {
   if (!games.length) {
     el.innerHTML = `<div class="content-wrap"><p class="ink-text" style="opacity:.5">作品内容更新中。</p></div>`;
@@ -43,13 +45,30 @@ export function renderGames(el, games) {
 function openGameDetail(g) {
   const overlay = document.getElementById('project-detail-overlay');
   if (!overlay) return;
+
+  const video = resolveVideo(g.video || '');
+  const videoHtml = video ? renderVideo(video) : '';
+  const descHtml = (g.description && typeof marked !== 'undefined')
+    ? `<div class="detail-section"><h4>运营心得</h4><div class="detail-markdown">${marked.parse(g.description)}</div></div>`
+    : '';
+  const metricsHtml = (g.metrics && g.metrics.length)
+    ? `<div class="detail-section"><h4>关键数据</h4><div class="detail-metrics">${g.metrics.map(renderMetric).join('')}</div></div>`
+    : '';
+  const coverHtml = g.cover
+    ? `<div class="detail-cover" style="background-image:url('${escapeHtml(g.cover)}')"></div>`
+    : '';
+
   overlay.innerHTML = `
     <div class="detail-scroll" role="document">
       <button class="detail-close" aria-label="关闭">收卷</button>
+      ${coverHtml}
       <h3 class="detail-title">${escapeHtml(g.name)}</h3>
       <div class="detail-meta">${escapeHtml(g.type)} · ${escapeHtml(g.period)} · ${escapeHtml(g.role)}</div>
+      ${videoHtml}
+      ${descHtml}
+      ${metricsHtml}
       <div class="detail-section">
-        <h4>运营心得</h4>
+        <h4>一句话亮点</h4>
         <p class="ink-text" style="line-height:1.9">${escapeHtml(g.note)}</p>
       </div>
     </div>
@@ -66,6 +85,20 @@ function openGameDetail(g) {
   overlay.querySelector('.detail-close').addEventListener('click', close);
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   document.addEventListener('keydown', onKey);
+}
+
+function renderVideo(v) {
+  if (v.type === 'video') {
+    return `<div class="detail-video"><video src="${escapeHtml(v.src)}" controls preload="metadata" playsinline></video></div>`;
+  }
+  if (v.type === 'bilibili' || v.type === 'youtube') {
+    return `<div class="detail-video"><iframe src="${escapeHtml(v.embed)}" frameborder="0" allow="accelerated-bytes; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  }
+  return '';
+}
+
+function renderMetric(m) {
+  return `<div class="metric-card"><div class="metric-value">${escapeHtml(String(m.value))}<span class="metric-unit">${escapeHtml(m.unit || '')}</span></div><div class="metric-label">${escapeHtml(m.label)}</div></div>`;
 }
 
 function escapeHtml(s) {

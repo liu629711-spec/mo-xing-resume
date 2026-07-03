@@ -5,7 +5,15 @@
     "period": "2024.01 - 至今",
     "role": "运营负责人",
     "cover": "",
-    "note": "主导版本节奏与数据增长，半年内 DAU 翻倍。"
+    "note": "主导版本节奏与数据增长，半年内 DAU 翻倍。",
+    "video": "",
+    "description": "## 核心亮点\n\n- 重构新手引导漏斗，次日留存 **+8pp**\n- 设计通行证+月卡体系，ARPU **+22%**\n- 主导春节/周年庆大促，单活动流水破千万\n\n## 运营节奏\n\n按版本周期编排活动，数据驱动复盘迭代。",
+    "metrics": [
+      { "label": "DAU", "value": "+120%", "unit": "" },
+      { "label": "留存", "value": "+8", "unit": "pp" },
+      { "label": "流水", "value": "+35%", "unit": "" }
+    ],
+    "draft": false
   },
   {
     "name": "星海征途",
@@ -13,7 +21,11 @@
     "period": "2022.06 - 2023.12",
     "role": "高级运营",
     "cover": "",
-    "note": "搭建赛季制活动体系，月活环比+60%。"
+    "note": "搭建赛季制活动体系，月活环比+60%。",
+    "video": "",
+    "description": "",
+    "metrics": [],
+    "draft": false
   },
   {
     "name": "萌宠小镇",
@@ -21,7 +33,11 @@
     "period": "2021.03 - 2022.05",
     "role": "运营专员",
     "cover": "",
-    "note": "建立数据日报机制，节日活动驱动稳定增长。"
+    "note": "建立数据日报机制，节日活动驱动稳定增长。",
+    "video": "",
+    "description": "",
+    "metrics": [],
+    "draft": false
   },
   {
     "name": "未上线项目",
@@ -30,6 +46,10 @@
     "role": "运营顾问",
     "cover": "",
     "note": "因保密协议不便展示",
-    "nda": true
+    "video": "",
+    "description": "",
+    "metrics": [],
+    "nda": true,
+    "draft": false
   }
 ]
