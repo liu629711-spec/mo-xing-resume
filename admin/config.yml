@@ -13,15 +13,16 @@ site_url: /
 collections:
   - name: 'profile'
     label: '关于 · 个人介绍'
-    file: 'data/profile.json'
-    create: false
-    delete: false
-    fields:
-      - { label: '姓名', name: 'name', widget: 'string' }
-      - { label: '标语', name: 'tagline', widget: 'string' }
-      - { label: '印章字', name: 'seal', widget: 'string' }
-      - { label: '头像', name: 'avatar', widget: 'image', required: false }
-      - { label: '自我介绍', name: 'summary', widget: 'list', field: { label: '一句话', name: 'text', widget: 'string' } }
+    files:
+      - name: 'profile'
+        label: '关于'
+        file: 'data/profile.json'
+        fields:
+          - { label: '姓名', name: 'name', widget: 'string' }
+          - { label: '标语', name: 'tagline', widget: 'string' }
+          - { label: '印章字', name: 'seal', widget: 'string' }
+          - { label: '头像', name: 'avatar', widget: 'image', required: false }
+          - { label: '自我介绍', name: 'summary', widget: 'list', field: { label: '一句话', name: 'text', widget: 'string' } }
 
   - name: 'skills'
     label: '技艺 · 技能矩阵'
@@ -69,38 +70,39 @@ collections:
 
   - name: 'metrics'
     label: '数据成河 · 数据看板'
-    file: 'data/metrics.json'
-    create: false
-    delete: false
-    fields:
-      - label: '高亮指标'
-        name: 'highlights'
-        widget: 'list'
+    files:
+      - name: 'metrics'
+        label: '数据看板'
+        file: 'data/metrics.json'
         fields:
-          - { label: '标签', name: 'label', widget: 'string' }
-          - { label: '数值', name: 'value', widget: 'string' }
-          - { label: '单位', name: 'unit', widget: 'string', required: false }
-      - label: 'DAU 曲线'
-        name: 'dauCurve'
-        widget: 'list'
-        required: false
-        fields:
-          - { label: '月份', name: 'month', widget: 'string' }
-          - { label: 'DAU', name: 'dau', widget: 'number' }
-      - label: '用户来源'
-        name: 'userSources'
-        widget: 'list'
-        required: false
-        fields:
-          - { label: '标签', name: 'label', widget: 'string' }
-          - { label: '占比', name: 'value', widget: 'number' }
-      - label: 'ROI 柱状图'
-        name: 'roiBars'
-        widget: 'list'
-        required: false
-        fields:
-          - { label: '活动', name: 'activity', widget: 'string' }
-          - { label: 'ROI', name: 'roi', widget: 'number', value_type: 'float' }
+          - label: '高亮指标'
+            name: 'highlights'
+            widget: 'list'
+            fields:
+              - { label: '标签', name: 'label', widget: 'string' }
+              - { label: '数值', name: 'value', widget: 'string' }
+              - { label: '单位', name: 'unit', widget: 'string', required: false }
+          - label: 'DAU 曲线'
+            name: 'dauCurve'
+            widget: 'list'
+            required: false
+            fields:
+              - { label: '月份', name: 'month', widget: 'string' }
+              - { label: 'DAU', name: 'dau', widget: 'number' }
+          - label: '用户来源'
+            name: 'userSources'
+            widget: 'list'
+            required: false
+            fields:
+              - { label: '标签', name: 'label', widget: 'string' }
+              - { label: '占比', name: 'value', widget: 'number' }
+          - label: 'ROI 柱状图'
+            name: 'roiBars'
+            widget: 'list'
+            required: false
+            fields:
+              - { label: '活动', name: 'activity', widget: 'string' }
+              - { label: 'ROI', name: 'roi', widget: 'number', value_type: 'float' }
 
   - name: 'games'
     label: '运营碑石 · 游戏作品'
@@ -148,14 +150,15 @@ collections:
 
   - name: 'contact'
     label: '联系 · 联系方式'
-    file: 'data/contact.json'
-    create: false
-    delete: false
-    fields:
-      - { label: '邮箱', name: 'email', widget: 'string' }
-      - { label: '微信号', name: 'wechat', widget: 'string', required: false }
-      - { label: '微信二维码', name: 'wechatQr', widget: 'image', required: false }
-      - { label: '电话', name: 'phone', widget: 'string', required: false }
-      - { label: 'LinkedIn', name: 'linkedin', widget: 'string', required: false }
-      - { label: '脉脉', name: 'maimai', widget: 'string', required: false }
-      - { label: '邀请语', name: 'invite', widget: 'text' }
+    files:
+      - name: 'contact'
+        label: '联系方式'
+        file: 'data/contact.json'
+        fields:
+          - { label: '邮箱', name: 'email', widget: 'string' }
+          - { label: '微信号', name: 'wechat', widget: 'string', required: false }
+          - { label: '微信二维码', name: 'wechatQr', widget: 'image', required: false }
+          - { label: '电话', name: 'phone', widget: 'string', required: false }
+          - { label: 'LinkedIn', name: 'linkedin', widget: 'string', required: false }
+          - { label: '脉脉', name: 'maimai', widget: 'string', required: false }
+          - { label: '邀请语', name: 'invite', widget: 'text' }
